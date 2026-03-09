@@ -412,40 +412,146 @@ footer{margin-top:auto;border-top:1px solid var(--bdr);background:var(--surf);pa
 /* ═══════════════════════════════════════════════════════
    !! UPDATE ZONE — edit SHIPMENT to update the package !!
 ═══════════════════════════════════════════════════════ */
+
 const SHIPMENT = {
-  trackingNumber: "TF-INT-2025-44819",
-  orderNumber:    "ORD-2025-NAM-0031",
-  description:    "Custom Artisan Leather Goods — 2 items",
-  weight:         "1.4 kg",
-  dimensions:     "38 × 24 × 12 cm",
-  carrier:        "DHL Express International",
-  service:        "DHL Worldwide Express",
-  origin:         "Windhoek, Namibia 🇳🇦",
-  destination:    "New York, NY, USA 🇺🇸",
-  shipper:        "Namcraft Artisans Co.",
-  orderDate:      "March 3, 2025",
-  shipDate:       "March 5, 2025",
-  eta:            "March 14–16, 2025",
+  trackingNumber: "TF-INT-2026-44819",
+  orderNumber: "ORD-2026-NAM-0031",
+
+  weight: "1.4 kg",
+  dimensions: "38 × 24 × 12 cm",
+
+  carrier: "DHL Express International",
+  service: "DHL Worldwide Express",
+
+  origin: "Windhoek, Namibia 🇳🇦",
+  destination: "Aventura, FL, USA 🇺🇸",
+
+  shipper: "Namcraft Artisans Co.",
+
+  receiver: "Mr. Rafi Franco",
+  deliveryAddress: `
+  19275 Biscayne Blvd, Suite 208
+  Aventura, FL 33180
+  United States of America
+  `,
+
+  transitTime: "2–4 business days",
+  eta: "Between 12–14 March 2026",
+
+  orderDate: "9 March 2026",
 
   currentStep: 4,
-  lastUpdate:  "Mar 9, 2025 · 02:14 AM UTC",
-  lastLocation:"OR Tambo Int'l Airport, Johannesburg, SA",
-  routeProgressPct: 30,
+
+  lastUpdate: "9 Mar 2026 · 11:05 AM UTC",
+  lastLocation: "Hosea Kutako International Airport (WDH), Namibia",
+
+  routeProgressPct: 20,
 
   steps: [
-    {label:"Order Received & Confirmed",loc:"Windhoek, Namibia",note:"Seller confirmed order and prepared shipment",time:"Mar 3, 2025 · 10:22 AM WAT",state:"done"},
-    {label:"Collected by DHL Courier",loc:"Windhoek, Namibia",note:"DHL courier collected parcel from seller address",time:"Mar 5, 2025 · 09:45 AM WAT",state:"done"},
-    {label:"Arrived at DHL Windhoek Depot",loc:"Windhoek Central DHL Depot, Namibia",note:"Parcel checked in · export docs processed · weight verified",time:"Mar 5, 2025 · 11:30 AM WAT",state:"done"},
-    {label:"Departed Windhoek — Flight to Johannesburg",loc:"Hosea Kutako Int'l Airport (WDH), Namibia",note:"Airlink regional cargo flight to OR Tambo, JNB · ~2h flight",time:"Mar 5, 2025 · 06:10 PM WAT",state:"done"},
-    {label:"Arrived Johannesburg — Export Clearance",loc:"OR Tambo International Airport (JNB), South Africa",note:"DHL international hub · SA Customs export processing underway",time:"Mar 9, 2025 · 02:14 AM SAST",state:"active"},
-    {label:"Cleared SA Customs — International Departure",loc:"OR Tambo International Airport (JNB), South Africa",note:"Loaded onto DHL Aviation long-haul freight flight",time:"Estimated Mar 9–10, 2025",state:"pending"},
-    {label:"Transit Hub — Frankfurt, Germany",loc:"DHL Aviation Hub, Frankfurt Airport (FRA), Germany",note:"Brief transit for onward routing to North America · ~1–6h stopover",time:"Estimated Mar 10, 2025",state:"pending"},
-    {label:"Transatlantic Flight — Departed Frankfurt",loc:"Frankfurt (FRA) → Cincinnati/Covington Hub, USA",note:"DHL main North American gateway hub · ~9h transatlantic flight",time:"Estimated Mar 10–11, 2025",state:"pending"},
-    {label:"US Customs & Import Clearance",loc:"DHL Americas Hub, Cincinnati/Covington (CVG), KY, USA",note:"US Customs & Border Protection inspection · import documentation",time:"Estimated Mar 11–12, 2025",state:"pending"},
-    {label:"Cleared US Customs — Dispatched to New York",loc:"Cincinnati Hub → New York, NY",note:"Transferred to domestic last-mile delivery network",time:"Estimated Mar 12–13, 2025",state:"pending"},
-    {label:"Arrived at Local DHL Facility",loc:"DHL Service Center, Queens, NY, USA",note:"Parcel at your local delivery hub · assigned to route driver",time:"Estimated Mar 13–14, 2025",state:"pending"},
-    {label:"Out for Delivery",loc:"New York, NY, USA",note:"Your driver is on their way",time:"Estimated Mar 14–15, 2025",state:"pending"},
-    {label:"Delivered",loc:"New York, NY, USA — Front Door",note:"Delivered and signed for",time:"Estimated March 14–16, 2025",state:"pending"}
+
+    {
+      label: "Shipment Collected",
+      loc: "Windhoek, Namibia",
+      note: "Courier collected shipment from sender",
+      time: "9 Mar 2026 · 02:40 AM UTC",
+      state: "done"
+    },
+
+    {
+      label: "Arrived at Windhoek Processing Facility",
+      loc: "Windhoek Logistics Facility",
+      note: "Shipment processed and prepared for export",
+      time: "9 Mar 2026 · 05:30 AM UTC",
+      state: "done"
+    },
+
+    {
+      label: "Export Documentation & Security Check",
+      loc: "Windhoek Export Processing",
+      note: "International shipping documentation verified",
+      time: "9 Mar 2026 · 07:10 AM UTC",
+      state: "done"
+    },
+
+    {
+      label: "Departed Windhoek — International Dispatch",
+      loc: "Hosea Kutako International Airport (WDH), Namibia",
+      note: "Shipment departed Namibia via regional cargo flight",
+      time: "9 Mar 2026 · 09:00 AM UTC",
+      state: "done"
+    },
+
+    {
+      label: "In Transit — Regional Hub",
+      loc: "Johannesburg Air Cargo Hub, South Africa",
+      note: "Shipment in transit to international routing hub",
+      time: "9 Mar 2026 · 11:05 AM UTC",
+      state: "active"
+    },
+
+    {
+      label: "Export Clearance & International Departure",
+      loc: "Johannesburg International Cargo Hub",
+      note: "Preparing for long-haul international flight",
+      time: "Estimated 9 Mar 2026 · 06:00 PM UTC",
+      state: "pending"
+    },
+
+    {
+      label: "Transit Hub — Frankfurt",
+      loc: "Frankfurt International Cargo Hub, Germany",
+      note: "Transit stop for North American routing",
+      time: "Estimated 10 Mar 2026 · 05:30 AM UTC",
+      state: "pending"
+    },
+
+    {
+      label: "Transatlantic Flight",
+      loc: "Frankfurt → Cincinnati International Hub",
+      note: "International cargo flight to North America",
+      time: "Estimated 10 Mar 2026 · 08:00 AM UTC",
+      state: "pending"
+    },
+
+    {
+      label: "US Customs Processing",
+      loc: "Cincinnati International Cargo Hub, USA",
+      note: "Import inspection and customs clearance",
+      time: "Estimated 11 Mar 2026 · 03:00 AM UTC",
+      state: "pending"
+    },
+
+    {
+      label: "Dispatched to New York Distribution Center",
+      loc: "Cincinnati → New York Logistics Network",
+      note: "Transferred to regional delivery network",
+      time: "Estimated 11 Mar 2026 · 08:30 PM UTC",
+      state: "pending"
+    },
+
+    {
+      label: "Arrived at Local Delivery Facility",
+      loc: "New York Regional Facility",
+      note: "Shipment prepared for final delivery route",
+      time: "Estimated 12 Mar 2026 · 10:00 AM UTC",
+      state: "pending"
+    },
+
+    {
+      label: "Out for Delivery",
+      loc: "Aventura, FL Delivery Route",
+      note: "Courier assigned and out for delivery",
+      time: "Estimated 12–13 Mar 2026",
+      state: "pending"
+    },
+
+    {
+      label: "Delivered",
+      loc: "Aventura, FL, USA",
+      note: "Delivered to receiver address",
+      time: "Estimated 12–14 March 2026",
+      state: "pending"
+    }
   ]
 };
 
