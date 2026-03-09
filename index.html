@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrackFlow — International Order Tracking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Geist+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F3EE;--bg2:#EDEAE2;--surf:#FFFFFF;--s2:#FAF9F6;
+  --bdr:#E2DED5;--bdrS:#C8C3B8;
+  --t1:#111009;--t2:#5C584F;--t3:#9C9890;
+  --grn:#1A5C38;--grnM:#2A7A50;--grnL:#E6F4ED;
+  --amb:#92400E;--ambL:#FEF3C7;
+  --red:#991B1B;--redL:#FEF2F2;
+  --blu:#1E3A6E;--bluL:#EFF4FF;
+  --r:14px;--rsm:8px;--rlg:20px;
+  --sh:0 2px 8px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04);
+  --shM:0 6px 28px rgba(0,0,0,.09),0 2px 8px rgba(0,0,0,.04);
+  --shL:0 16px 56px rgba(0,0,0,.11),0 4px 16px rgba(0,0,0,.05);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+
+/* pages */
+.page{display:none;flex-direction:column;flex:1;animation:pgIn .38s ease both}
+.page.active{display:flex}
+@keyframes pgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* nav */
+nav{position:sticky;top:0;z-index:300;height:62px;background:rgba(245,243,238,.93);backdrop-filter:blur(22px);border-bottom:1px solid var(--bdr);display:flex;align-items:center;padding:0 2.5rem}
+.nLogo{font-family:'Fraunces',serif;font-weight:700;font-size:1.18rem;letter-spacing:-.04em;color:var(--t1);text-decoration:none;display:flex;align-items:center;gap:10px;margin-right:2.8rem;cursor:pointer;flex-shrink:0}
+.nMark{width:28px;height:28px;background:var(--t1);border-radius:8px;display:grid;place-items:center;flex-shrink:0}
+.nMark svg{color:#fff}
+.nLinks{display:flex;align-items:center;list-style:none;flex:1}
+.nLinks li button{font-size:.82rem;font-weight:500;color:var(--t2);background:none;border:none;cursor:pointer;padding:7px 13px;border-radius:var(--rsm);transition:color .15s,background .15s;font-family:'Outfit',sans-serif}
+.nLinks li button:hover{color:var(--t1);background:var(--bg2)}
+.nLinks li.on button{color:var(--t1);font-weight:700}
+.nRight{display:flex;align-items:center;gap:10px;margin-left:auto}
+.nStat{display:flex;align-items:center;gap:6px;font-size:.7rem;color:var(--grnM);font-weight:600;background:var(--grnL);padding:4px 11px;border-radius:20px;border:1px solid rgba(42,122,80,.14)}
+.nDot{width:6px;height:6px;background:var(--grnM);border-radius:50%;animation:bth 2.4s ease-in-out infinite}
+@keyframes bth{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.65)}}
+.btnNav{font-size:.78rem;font-weight:600;font-family:'Outfit',sans-serif;color:var(--t1);background:var(--surf);border:1px solid var(--bdrS);padding:7px 16px;border-radius:20px;cursor:pointer;transition:all .15s}
+.btnNav:hover{border-color:var(--t1);box-shadow:var(--sh)}
+
+/* hamburger */
+.nHamburger{display:none;flex-direction:column;justify-content:center;align-items:center;width:38px;height:38px;background:none;border:1.5px solid var(--bdr);border-radius:var(--rsm);cursor:pointer;gap:5px;margin-left:auto;flex-shrink:0;transition:border-color .15s}
+.nHamburger:hover{border-color:var(--bdrS)}
+.nHamburger span{display:block;width:16px;height:1.5px;background:var(--t1);border-radius:2px;transition:transform .25s ease,opacity .2s ease,width .2s ease}
+.nHamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nHamburger.open span:nth-child(2){opacity:0;width:0}
+.nHamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* mobile nav drawer */
+.mobileNav{display:none;position:fixed;top:62px;left:0;right:0;bottom:0;background:rgba(245,243,238,.97);backdrop-filter:blur(24px);z-index:299;flex-direction:column;padding:18px 1.4rem 28px;gap:4px;overflow-y:auto;border-top:1px solid var(--bdr);animation:mNavIn .24s ease both}
+.mobileNav.open{display:flex}
+@keyframes mNavIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.mNavItem{font-size:.97rem;font-weight:500;color:var(--t2);background:none;border:none;border-radius:10px;padding:13px 16px;text-align:left;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s,color .15s;width:100%}
+.mNavItem:hover,.mNavItem.on{background:var(--bg2);color:var(--t1);font-weight:600}
+.mNavDivider{height:1px;background:var(--bdr);margin:8px 0}
+.mNavCTA{margin-top:8px;width:100%}
+
+/* page header */
+.phdr{background:var(--surf);border-bottom:1px solid var(--bdr);padding:44px 2.5rem 36px}
+.phdr-i{max-width:920px;margin:0 auto}
+.pbrow{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:9px}
+.ptitle{font-family:'Fraunces',serif;font-size:clamp(1.9rem,4vw,2.7rem);font-weight:700;letter-spacing:-.04em;line-height:1.08;color:var(--t1);margin-bottom:9px}
+.ptitle em{font-style:italic;color:var(--t3)}
+.pdesc{font-size:.91rem;color:var(--t2);font-weight:300;max-width:520px;line-height:1.68}
+.wrap{max-width:920px;margin:0 auto;padding:38px 2.5rem;width:100%}
+
+/* buttons */
+.btnP{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 22px;background:var(--t1);color:#fff;border:none;border-radius:10px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:600;cursor:pointer;transition:background .15s,transform .12s,box-shadow .15s;letter-spacing:.02em}
+.btnP:hover{background:#1f1e1a;transform:translateY(-1px);box-shadow:0 8px 24px rgba(17,16,9,.2)}
+.btnP:active{transform:translateY(0)}
+.btnS{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 16px;background:var(--surf);color:var(--t1);border:1.5px solid var(--bdr);border-radius:10px;font-family:'Outfit',sans-serif;font-size:.81rem;font-weight:600;cursor:pointer;transition:all .15s}
+.btnS:hover{border-color:var(--bdrS);box-shadow:var(--sh)}
+
+/* tags */
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:.67rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px}
+.tag.grn{background:var(--grnL);color:var(--grn)}
+.tag.amb{background:var(--ambL);color:var(--amb)}
+.tag.blu{background:var(--bluL);color:var(--blu)}
+.tagDot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:bth 1.8s ease-in-out infinite}
+
+/* forms */
+.fGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fGrp{display:flex;flex-direction:column;gap:6px}
+.fGrp.full{grid-column:1/-1}
+.fLbl{font-size:.73rem;font-weight:600;color:var(--t2)}
+.fIn,.fSel,.fTa{font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:400;color:var(--t1);background:var(--bg);border:1.5px solid var(--bdr);border-radius:var(--rsm);padding:10px 14px;outline:none;transition:border-color .15s,box-shadow .15s,background .15s;width:100%}
+.fIn:focus,.fSel:focus,.fTa:focus{border-color:var(--t1);box-shadow:0 0 0 3px rgba(17,16,9,.05);background:#fff}
+.fTa{resize:vertical;min-height:96px;line-height:1.6}
+
+/* toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--t1);color:#fff;padding:13px 18px;border-radius:var(--r);font-size:.82rem;font-weight:500;box-shadow:var(--shL);z-index:999;display:flex;align-items:center;gap:9px;transform:translateY(80px);opacity:0;transition:transform .38s cubic-bezier(.4,0,.2,1),opacity .38s;max-width:340px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.err{background:var(--red)}
+
+/* misc */
+.dv{height:1px;background:var(--bdr);margin:28px 0}
+.secT{font-family:'Fraunces',serif;font-size:1.08rem;font-weight:600;letter-spacing:-.03em;color:var(--t1);margin-bottom:14px}
+
+/* legal pages */
+.legalWrap{max-width:720px;margin:0 auto;padding:38px 2.5rem;width:100%}
+.legalSection{margin-bottom:36px}
+.legalSection h2{font-family:'Fraunces',serif;font-size:1.08rem;font-weight:600;letter-spacing:-.03em;color:var(--t1);margin-bottom:10px}
+.legalSection p{font-size:.88rem;color:var(--t2);font-weight:300;line-height:1.78;margin-bottom:10px}
+.legalSection ul{list-style:none;padding:0;margin:0 0 10px}
+.legalSection ul li{font-size:.88rem;color:var(--t2);font-weight:300;line-height:1.78;padding:4px 0 4px 18px;position:relative}
+.legalSection ul li::before{content:'—';position:absolute;left:0;color:var(--t3)}
+.legalLastUpdated{display:inline-flex;align-items:center;gap:7px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);background:var(--surf);border:1px solid var(--bdr);padding:5px 13px;border-radius:20px;margin-bottom:28px}
+.legalToc{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:18px 22px;margin-bottom:32px}
+.legalToc .secT{margin-bottom:10px;font-size:.92rem}
+.legalToc ol{padding-left:18px}
+.legalToc ol li{font-size:.82rem;color:var(--t2);padding:3px 0;font-weight:300}
+.legalToc ol li a{color:var(--t2);text-decoration:none;transition:color .15s}
+.legalToc ol li a:hover{color:var(--t1)}
+.legalHighlight{background:var(--grnL);border:1px solid rgba(42,122,80,.18);border-radius:var(--rsm);padding:14px 18px;margin-bottom:12px;font-size:.83rem;color:var(--grn);font-weight:500;line-height:1.6}
+.legalContact{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rlg);padding:26px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:36px}
+.legalContact p{font-size:.83rem;color:var(--t2);font-weight:300;margin-top:4px}
+
+/* ── HOME / TRACK ── */
+.hero{padding:56px 2.5rem 0;text-align:center;max-width:640px;margin:0 auto;width:100%}
+.hBadge{display:inline-flex;align-items:center;gap:7px;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);background:var(--surf);border:1px solid var(--bdr);padding:5px 13px;border-radius:20px;margin-bottom:20px}
+.hH1{font-family:'Fraunces',serif;font-size:clamp(2.6rem,7vw,4.4rem);font-weight:700;letter-spacing:-.05em;line-height:1.02;color:var(--t1);margin-bottom:14px}
+.hH1 em{font-style:italic;color:var(--t3)}
+.hP{font-size:.96rem;color:var(--t2);font-weight:300;line-height:1.72;margin-bottom:42px;max-width:360px;margin-left:auto;margin-right:auto}
+
+.tCard{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rlg);box-shadow:var(--shM);padding:32px;max-width:560px;margin:0 auto 28px;width:100%}
+.tLbl{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:13px}
+.tRow{display:flex;gap:8px;margin-bottom:13px}
+.tGrp{position:relative;flex:1}
+.tPfx{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--t3);display:flex;pointer-events:none}
+.tIn{width:100%;height:50px;padding:0 14px 0 42px;font-family:'Geist Mono',monospace;font-size:.87rem;letter-spacing:.06em;color:var(--t1);background:var(--bg);border:1.5px solid var(--bdr);border-radius:10px;outline:none;transition:border-color .15s,box-shadow .15s,background .15s;caret-color:var(--grnM)}
+.tIn::placeholder{color:var(--t3);font-family:'Outfit',sans-serif;font-size:.83rem;letter-spacing:0;font-weight:300}
+.tIn:focus{border-color:var(--t1);background:#fff;box-shadow:0 0 0 3px rgba(17,16,9,.06)}
+.tIn.shake{animation:shk .42s ease;border-color:#F87171!important}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.btnTr{height:50px;padding:0 22px;background:var(--t1);color:#fff;border:none;border-radius:10px;font-family:'Outfit',sans-serif;font-size:.84rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;transition:background .15s,transform .12s,box-shadow .15s;white-space:nowrap;flex-shrink:0}
+.btnTr:hover{background:#1f1e1a;transform:translateY(-1px);box-shadow:0 8px 24px rgba(17,16,9,.22)}
+.btnTr.ld{pointer-events:none;background:#555}
+.bIco{transition:transform .2s}
+.btnTr:hover .bIco{transform:translateX(3px)}
+.sp{width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .65s linear infinite;display:none}
+.btnTr.ld .sp{display:block}
+.btnTr.ld .bTxt,.btnTr.ld .bIco{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tMeta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tHint{display:flex;align-items:center;gap:5px;font-size:.73rem;color:var(--t3)}
+.tEx{font-size:.72rem;color:var(--t3);font-family:'Geist Mono',monospace}
+
+/* result */
+#resPanel{display:none;max-width:560px;margin:0 auto 48px;width:100%}
+.resCard{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rlg);box-shadow:var(--shM);overflow:hidden}
+
+/* route banner */
+.rBanner{background:var(--t1);padding:18px 22px;display:flex;align-items:center;position:relative;overflow:hidden}
+.rBanner::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 1px,transparent 44px);pointer-events:none}
+.rCity{color:rgba(255,255,255,.45);font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px}
+.rName{color:#fff;font-size:.88rem;font-weight:600;font-family:'Fraunces',serif;letter-spacing:-.02em}
+.rFlag{font-size:1.1rem;margin-bottom:1px}
+.rMid{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 14px}
+.rBar{width:100%;height:2px;background:rgba(255,255,255,.12);border-radius:2px;position:relative}
+.rFill{height:2px;background:linear-gradient(90deg,var(--grnM),#4ade80);border-radius:2px;transition:width 1.6s cubic-bezier(.4,0,.2,1) .4s;position:relative;width:0}
+.rPlane{position:absolute;right:-8px;top:-8px;font-size:15px;transition:none}
+.rDist{font-size:.62rem;color:rgba(255,255,255,.35);letter-spacing:.05em}
+.rEnd{text-align:right}
+
+/* top row */
+.resTop{padding:18px 22px;border-bottom:1px solid var(--bdr);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.resLbl{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
+.resId{font-family:'Geist Mono',monospace;font-size:.97rem;font-weight:500;color:var(--t1);letter-spacing:.04em;word-break:break-all}
+.sBadge{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:20px;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.sBadge.tr{background:var(--ambL);color:var(--amb);border:1px solid rgba(146,64,14,.12)}
+.sBadge.dl{background:var(--grnL);color:var(--grn);border:1px solid rgba(26,92,56,.12)}
+.sBadge.cu{background:var(--bluL);color:var(--blu);border:1px solid rgba(30,58,110,.12)}
+.sBadgeDot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:bth 1.8s ease-in-out infinite}
+
+/* update notice */
+.uNotice{margin:14px 22px;border:1px solid rgba(42,122,80,.2);background:var(--grnL);border-radius:var(--rsm);padding:10px 13px;display:flex;align-items:flex-start;gap:8px;font-size:.76rem;color:var(--grn);font-weight:500;line-height:1.5}
+
+/* timeline */
+.tlWrap{padding:20px 22px;border-bottom:1px solid var(--bdr)}
+.tl{position:relative;display:flex;flex-direction:column}
+.tlLine{position:absolute;left:13px;top:16px;bottom:16px;width:1.5px;background:var(--bdr);border-radius:2px}
+.tlFill{position:absolute;left:13px;top:16px;width:1.5px;background:linear-gradient(to bottom,var(--grn),var(--grnM));border-radius:2px;transition:height 1.3s cubic-bezier(.4,0,.2,1) .3s;height:0}
+.tlRow{display:flex;align-items:flex-start;gap:14px;padding:8px 0;position:relative;z-index:1}
+.tlNode{width:27px;height:27px;min-width:27px;border-radius:50%;display:grid;place-items:center;position:relative;z-index:2;transition:all .3s}
+.tlNode.done{background:var(--grn);box-shadow:0 0 0 3px var(--grnL)}
+.tlNode.active{background:var(--t1);box-shadow:0 0 0 3px var(--bg2);animation:nP 2.2s ease-in-out infinite}
+.tlNode.pending{background:var(--surf);border:1.5px solid var(--bdr)}
+.tlNode.cust{background:var(--blu);box-shadow:0 0 0 3px var(--bluL)}
+@keyframes nP{0%,100%{box-shadow:0 0 0 3px var(--bg2)}50%{box-shadow:0 0 0 7px rgba(17,16,9,.04)}}
+.tlInfo{flex:1;padding-top:2px;padding-bottom:3px;min-width:0}
+.tlName{font-size:.85rem;font-weight:600;color:var(--t1);margin-bottom:2px;line-height:1.3}
+.tlName.dim{color:var(--t3);font-weight:400}
+.tlNote{font-size:.73rem;color:var(--t3);font-weight:300;line-height:1.45}
+.tlTime{font-size:.7rem;color:var(--t3);font-family:'Geist Mono',monospace;white-space:nowrap;padding-top:4px;flex-shrink:0;text-align:right}
+
+/* info grid */
+.iGrid{display:grid;grid-template-columns:1fr 1fr}
+.iCell{padding:15px 20px;border-right:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
+.iCell:nth-child(2n){border-right:none}
+.iCell:nth-last-child(-n+2){border-bottom:none}
+.iKey{font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
+.iVal{font-size:.86rem;font-weight:500;color:var(--t1)}
+.iVal.hi{color:var(--grn);font-weight:700}
+
+/* trust bar */
+.trBar{display:flex;align-items:center;justify-content:center;gap:26px;padding:0 2.5rem 56px;flex-wrap:wrap;margin-top:28px}
+.trItem{display:flex;align-items:center;gap:7px;font-size:.73rem;color:var(--t3);font-weight:500}
+
+/* loading overlay */
+#ldOv{position:fixed;inset:0;background:rgba(245,243,238,.94);backdrop-filter:blur(12px);z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;opacity:0;pointer-events:none;transition:opacity .3s}
+#ldOv.show{opacity:1;pointer-events:all}
+.ldBox{text-align:center}
+.ldGlobe{font-size:2.5rem;animation:gSpin 1.9s ease-in-out infinite}
+@keyframes gSpin{0%,100%{transform:rotate(-6deg) scale(1)}50%{transform:rotate(6deg) scale(1.08)}}
+.ldL1{font-family:'Fraunces',serif;font-size:1.28rem;font-weight:600;letter-spacing:-.03em;color:var(--t1);margin-top:14px}
+.ldL2{font-size:.82rem;color:var(--t3);font-weight:300;margin-top:5px}
+.ldDots{display:flex;gap:6px;justify-content:center;margin-top:16px}
+.ldDots span{width:7px;height:7px;border-radius:50%;background:var(--t1);animation:dB 1.2s ease-in-out infinite}
+.ldDots span:nth-child(2){animation-delay:.15s}
+.ldDots span:nth-child(3){animation-delay:.3s}
+@keyframes dB{0%,80%,100%{transform:scale(.5);opacity:.4}40%{transform:scale(1);opacity:1}}
+.ldSteps{display:flex;flex-direction:column;gap:7px;margin-top:18px;background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:16px 20px;min-width:260px}
+.ldStep{display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--t3);font-weight:400;transition:color .3s}
+.ldStep.done{color:var(--grn);font-weight:500}
+.ldStep.act{color:var(--t1);font-weight:600}
+.ldStepI{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--bdr);display:grid;place-items:center;flex-shrink:0;transition:all .3s;font-size:9px;color:var(--t3)}
+.ldStep.done .ldStepI{background:var(--grn);border-color:var(--grn);color:#fff}
+.ldStep.act .ldStepI{border-color:var(--t1);animation:nP 1.2s ease-in-out infinite}
+
+/* orders page */
+.ordTabs{display:flex;border-bottom:1px solid var(--bdr);margin-bottom:24px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ordTab{font-size:.81rem;font-weight:500;color:var(--t2);background:none;border:none;border-bottom:2px solid transparent;padding:9px 16px;cursor:pointer;transition:all .15s;font-family:'Outfit',sans-serif;margin-bottom:-1px;white-space:nowrap}
+.ordTab.on{color:var(--t1);border-bottom-color:var(--t1);font-weight:700}
+.ordCard{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:20px 22px;margin-bottom:10px;display:flex;align-items:center;gap:18px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.ordCard:hover{border-color:var(--bdrS);box-shadow:var(--sh)}
+.ordImg{width:50px;height:50px;border-radius:10px;background:var(--bg2);border:1px solid var(--bdr);flex-shrink:0;display:grid;place-items:center;font-size:20px}
+.ordInfo{flex:1;min-width:0}
+.ordName{font-size:.89rem;font-weight:600;color:var(--t1);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ordMeta{font-size:.75rem;color:var(--t3);font-weight:300}
+.ordR{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.ordPrice{font-size:.88rem;font-weight:700;color:var(--t1)}
+.emSt{text-align:center;padding:60px 24px;color:var(--t3)}
+.emIco{font-size:2.4rem;margin-bottom:12px;opacity:.35}
+.emTtl{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;color:var(--t2);margin-bottom:7px;letter-spacing:-.02em}
+.emDesc{font-size:.83rem;font-weight:300;line-height:1.65;max-width:280px;margin:0 auto}
+
+/* returns */
+.stepsRow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:36px}
+.stepCard{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:22px}
+.stepNum{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:700;color:var(--bdr);letter-spacing:-.05em;margin-bottom:10px;line-height:1}
+.stepTtl{font-size:.88rem;font-weight:600;color:var(--t1);margin-bottom:5px}
+.stepD{font-size:.79rem;color:var(--t2);font-weight:300;line-height:1.62}
+.fCard{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rlg);box-shadow:var(--sh);padding:30px;margin-bottom:30px}
+.fCardT{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:600;letter-spacing:-.03em;color:var(--t1);margin-bottom:4px}
+.fCardS{font-size:.79rem;color:var(--t3);font-weight:300;margin-bottom:22px}
+.polGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.polCard{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:18px 20px}
+.polIco{font-size:1.3rem;margin-bottom:9px}
+.polT{font-size:.87rem;font-weight:600;color:var(--t1);margin-bottom:4px}
+.polD{font-size:.77rem;color:var(--t2);font-weight:300;line-height:1.62}
+
+/* faq */
+.faqCats{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px}
+.faqCat{font-size:.76rem;font-weight:600;font-family:'Outfit',sans-serif;background:var(--surf);border:1px solid var(--bdr);border-radius:20px;padding:5px 13px;cursor:pointer;color:var(--t2);transition:all .15s}
+.faqCat.on,.faqCat:hover{background:var(--t1);color:#fff;border-color:var(--t1)}
+.faqList{display:flex;flex-direction:column;gap:7px;margin-bottom:36px}
+.faqItem{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;transition:border-color .15s}
+.faqItem:hover{border-color:var(--bdrS)}
+.faqQ{width:100%;background:none;border:none;padding:17px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;text-align:left;font-family:'Outfit',sans-serif;font-size:.87rem;font-weight:600;color:var(--t1)}
+.faqIco{width:22px;height:22px;border-radius:50%;background:var(--bg2);border:1px solid var(--bdr);display:grid;place-items:center;flex-shrink:0;transition:background .15s,transform .3s;color:var(--t2);font-size:14px;font-weight:400;line-height:1}
+.faqItem.open .faqIco{transform:rotate(45deg);background:var(--t1);color:#fff;border-color:var(--t1)}
+.faqA{padding:0 20px;max-height:0;overflow:hidden;font-size:.83rem;color:var(--t2);font-weight:300;line-height:1.78;transition:max-height .36s ease,padding .36s ease}
+.faqItem.open .faqA{max-height:240px;padding:0 20px 17px}
+.faqCTA{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rlg);padding:26px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.faqCTA p{font-size:.83rem;color:var(--t2);font-weight:300;margin-top:4px}
+
+/* support */
+.chanGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:34px}
+.chan{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:22px;text-align:center;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
+.chan:hover{border-color:var(--bdrS);box-shadow:var(--shM);transform:translateY(-2px)}
+.chanIco{width:42px;height:42px;border-radius:11px;background:var(--bg2);border:1px solid var(--bdr);display:grid;place-items:center;margin:0 auto 12px;font-size:17px}
+.chanT{font-size:.88rem;font-weight:600;color:var(--t1);margin-bottom:4px}
+.chanD{font-size:.75rem;color:var(--t3);font-weight:300;line-height:1.5;margin-bottom:10px}
+.chanA{font-size:.68rem;font-weight:700;color:var(--grnM);background:var(--grnL);padding:3px 10px;border-radius:20px;display:inline-block}
+.chanA.off{color:var(--t3);background:var(--bg2)}
+.inboxHdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.inboxMsg{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 17px;margin-bottom:8px;transition:border-color .15s}
+.inboxMsg:hover{border-color:var(--bdrS)}
+.inboxTop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:4px}
+.inboxName{font-size:.84rem;font-weight:600;color:var(--t1)}
+.inboxTime{font-size:.7rem;color:var(--t3);font-family:'Geist Mono',monospace;flex-shrink:0}
+.inboxSubj{font-size:.79rem;font-weight:500;color:var(--t2);margin-bottom:2px}
+.inboxPrev{font-size:.74rem;color:var(--t3);font-weight:300;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inboxEmpty{text-align:center;padding:32px;color:var(--t3);font-size:.83rem;font-weight:300}
+.inboxBadge{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:var(--t1);color:#fff;border-radius:50%;font-size:.64rem;font-weight:700;margin-left:6px}
+.hoursGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hrsCard{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:20px}
+.hrsKey{font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:9px}
+.hrsVal{font-size:.86rem;font-weight:600;color:var(--t1);margin-bottom:5px}
+.hrsDesc{font-size:.79rem;color:var(--t2);font-weight:300;line-height:1.65}
+
+/* footer */
+footer{margin-top:auto;border-top:1px solid var(--bdr);background:var(--surf);padding:28px 2.5rem}
+.ftI{max-width:920px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.ftLogo{font-family:'Fraunces',serif;font-size:.88rem;font-weight:700;color:var(--t2);letter-spacing:-.03em}
+.ftLinks{display:flex;list-style:none;flex-wrap:wrap}
+.ftLinks a{font-size:.74rem;color:var(--t3);text-decoration:none;padding:4px 11px;border-radius:6px;transition:color .15s}
+.ftLinks a:hover{color:var(--t1)}
+.ftCopy{font-size:.71rem;color:var(--t3)}
+
+/* ═══ RESPONSIVE ═══ */
+
+/* tablet: 641–900 */
+@media(max-width:900px){
+  .chanGrid{grid-template-columns:1fr 1fr}
+  .stepsRow{grid-template-columns:1fr 1fr}
+}
+
+/* mobile: ≤640 */
+@media(max-width:640px){
+  nav{padding:0 1.2rem}
+  .nLinks{display:none}
+  .nStat{display:none}
+  .nRight .btnNav{display:none}
+  .nHamburger{display:flex}
+
+  .phdr{padding:28px 1.2rem 22px}
+  .wrap{padding:22px 1.2rem}
+  .legalWrap{padding:22px 1.2rem}
+
+  .hero{padding:36px 1.2rem 0}
+  .hP{margin-bottom:28px;font-size:.9rem}
+  .hH1{font-size:2.4rem}
+
+  .tCard{padding:20px 16px;margin-bottom:18px}
+  .tRow{flex-direction:column;gap:10px}
+  .btnTr{width:100%;justify-content:center;height:48px}
+  .tIn{height:48px}
+
+  #resPanel{margin-bottom:28px}
+  .rBanner{padding:14px 15px;gap:8px}
+  .rMid{padding:0 8px}
+  .rName{font-size:.78rem}
+  .rDist{font-size:.58rem}
+  .rFlag{font-size:1rem}
+  .resTop{padding:14px 15px;gap:8px}
+  .resId{font-size:.84rem}
+  .uNotice{margin:10px 15px;font-size:.73rem}
+  .tlWrap{padding:16px 15px}
+  .tlRow{gap:10px}
+  .tlName{font-size:.82rem}
+  .tlNote{font-size:.7rem}
+  .tlTime{font-size:.65rem}
+  .iGrid{grid-template-columns:1fr}
+  .iCell{border-right:none!important;border-bottom:1px solid var(--bdr)!important}
+  .iCell:last-child{border-bottom:none!important}
+  .iCell{padding:13px 15px}
+
+  .stepsRow{grid-template-columns:1fr;gap:10px;margin-bottom:24px}
+  .chanGrid{grid-template-columns:1fr;gap:10px}
+  .polGrid{grid-template-columns:1fr;gap:10px}
+  .fGrid{grid-template-columns:1fr;gap:12px}
+  .fGrp.full{grid-column:1}
+  .hoursGrid{grid-template-columns:1fr;gap:10px}
+
+  .fCard{padding:20px 16px}
+  .faqCTA{flex-direction:column;gap:14px;padding:20px}
+  .faqCTA .btnP{width:100%;justify-content:center}
+  .legalContact{flex-direction:column;gap:14px;padding:20px}
+  .legalContact .btnP{width:100%;justify-content:center}
+
+  .ordCard{gap:12px;padding:16px}
+  .ordImg{width:42px;height:42px;font-size:17px}
+  .ordName{font-size:.83rem}
+  .ordMeta{font-size:.7rem}
+
+  .trBar{gap:14px;padding:0 1.2rem 36px}
+  .trItem{font-size:.69rem}
+
+  footer{padding:20px 1.2rem}
+  .ftI{flex-direction:column;gap:10px;text-align:center}
+  .ftLinks{justify-content:center}
+
+  .ldSteps{min-width:auto;width:calc(100vw - 48px);max-width:300px}
+  .ldL1{font-size:1.1rem}
+
+  .hBadge{font-size:.62rem;padding:4px 11px}
+  .inboxTop{flex-direction:column;gap:3px}
+  .inboxTime{font-size:.68rem}
+}
+
+/* very small: ≤380 */
+@media(max-width:380px){
+  .hH1{font-size:2rem}
+  .ptitle{font-size:1.65rem}
+  .rBanner{flex-wrap:nowrap}
+  .rName{font-size:.72rem}
+  nav{padding:0 1rem}
+}
+</style>
+</head>
+<body>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   !! UPDATE ZONE — edit SHIPMENT to update the package !!
+═══════════════════════════════════════════════════════ */
+const SHIPMENT = {
+  trackingNumber: "TF-INT-2025-44819",
+  orderNumber:    "ORD-2025-NAM-0031",
+  description:    "Custom Artisan Leather Goods — 2 items",
+  weight:         "1.4 kg",
+  dimensions:     "38 × 24 × 12 cm",
+  carrier:        "DHL Express International",
+  service:        "DHL Worldwide Express",
+  origin:         "Windhoek, Namibia 🇳🇦",
+  destination:    "New York, NY, USA 🇺🇸",
+  shipper:        "Namcraft Artisans Co.",
+  orderDate:      "March 3, 2025",
+  shipDate:       "March 5, 2025",
+  eta:            "March 14–16, 2025",
+
+  currentStep: 4,
+  lastUpdate:  "Mar 9, 2025 · 02:14 AM UTC",
+  lastLocation:"OR Tambo Int'l Airport, Johannesburg, SA",
+  routeProgressPct: 30,
+
+  steps: [
+    {label:"Order Received & Confirmed",loc:"Windhoek, Namibia",note:"Seller confirmed order and prepared shipment",time:"Mar 3, 2025 · 10:22 AM WAT",state:"done"},
+    {label:"Collected by DHL Courier",loc:"Windhoek, Namibia",note:"DHL courier collected parcel from seller address",time:"Mar 5, 2025 · 09:45 AM WAT",state:"done"},
+    {label:"Arrived at DHL Windhoek Depot",loc:"Windhoek Central DHL Depot, Namibia",note:"Parcel checked in · export docs processed · weight verified",time:"Mar 5, 2025 · 11:30 AM WAT",state:"done"},
+    {label:"Departed Windhoek — Flight to Johannesburg",loc:"Hosea Kutako Int'l Airport (WDH), Namibia",note:"Airlink regional cargo flight to OR Tambo, JNB · ~2h flight",time:"Mar 5, 2025 · 06:10 PM WAT",state:"done"},
+    {label:"Arrived Johannesburg — Export Clearance",loc:"OR Tambo International Airport (JNB), South Africa",note:"DHL international hub · SA Customs export processing underway",time:"Mar 9, 2025 · 02:14 AM SAST",state:"active"},
+    {label:"Cleared SA Customs — International Departure",loc:"OR Tambo International Airport (JNB), South Africa",note:"Loaded onto DHL Aviation long-haul freight flight",time:"Estimated Mar 9–10, 2025",state:"pending"},
+    {label:"Transit Hub — Frankfurt, Germany",loc:"DHL Aviation Hub, Frankfurt Airport (FRA), Germany",note:"Brief transit for onward routing to North America · ~1–6h stopover",time:"Estimated Mar 10, 2025",state:"pending"},
+    {label:"Transatlantic Flight — Departed Frankfurt",loc:"Frankfurt (FRA) → Cincinnati/Covington Hub, USA",note:"DHL main North American gateway hub · ~9h transatlantic flight",time:"Estimated Mar 10–11, 2025",state:"pending"},
+    {label:"US Customs & Import Clearance",loc:"DHL Americas Hub, Cincinnati/Covington (CVG), KY, USA",note:"US Customs & Border Protection inspection · import documentation",time:"Estimated Mar 11–12, 2025",state:"pending"},
+    {label:"Cleared US Customs — Dispatched to New York",loc:"Cincinnati Hub → New York, NY",note:"Transferred to domestic last-mile delivery network",time:"Estimated Mar 12–13, 2025",state:"pending"},
+    {label:"Arrived at Local DHL Facility",loc:"DHL Service Center, Queens, NY, USA",note:"Parcel at your local delivery hub · assigned to route driver",time:"Estimated Mar 13–14, 2025",state:"pending"},
+    {label:"Out for Delivery",loc:"New York, NY, USA",note:"Your driver is on their way",time:"Estimated Mar 14–15, 2025",state:"pending"},
+    {label:"Delivered",loc:"New York, NY, USA — Front Door",note:"Delivered and signed for",time:"Estimated March 14–16, 2025",state:"pending"}
+  ]
+};
+
+const MSGS_KEY = "trackflow_msgs_v2";
+</script>
+
+<!-- LOADING OVERLAY -->
+<div id="ldOv">
+  <div class="ldBox">
+    <div class="ldGlobe">🌍</div>
+    <div class="ldL1">Locating your shipment</div>
+    <div class="ldL2">Scanning 500+ carrier networks globally…</div>
+    <div class="ldDots"><span></span><span></span><span></span></div>
+  </div>
+  <div class="ldSteps">
+    <div class="ldStep" id="ls0"><span class="ldStepI">1</span>Connecting to DHL carrier API…</div>
+    <div class="ldStep" id="ls1"><span class="ldStepI">2</span>Retrieving shipment events…</div>
+    <div class="ldStep" id="ls2"><span class="ldStepI">3</span>Decoding route &amp; checkpoints…</div>
+    <div class="ldStep" id="ls3"><span class="ldStepI">4</span>Calculating delivery estimate…</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nLogo" onclick="go('home')">
+    <div class="nMark">
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/>
+      </svg>
+    </div>
+    TrackFlow
+  </a>
+  <ul class="nLinks">
+    <li id="nl-home"><button onclick="go('home')">Track Order</button></li>
+    <li id="nl-orders"><button onclick="go('orders')">My Orders</button></li>
+    <li id="nl-returns"><button onclick="go('returns')">Returns</button></li>
+    <li id="nl-faq"><button onclick="go('faq')">FAQ</button></li>
+  </ul>
+  <div class="nRight">
+    <div class="nStat"><div class="nDot"></div>All systems live</div>
+    <button class="btnNav" onclick="go('support')">Contact Support</button>
+  </div>
+  <!-- Hamburger -->
+  <button class="nHamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV DRAWER -->
+<div class="mobileNav" id="mobileNav">
+  <button class="mNavItem" id="mn-home" onclick="go('home');closeMobileNav()">📦 Track Order</button>
+  <button class="mNavItem" id="mn-orders" onclick="go('orders');closeMobileNav()">🗂 My Orders</button>
+  <button class="mNavItem" id="mn-returns" onclick="go('returns');closeMobileNav()">↩️ Returns</button>
+  <button class="mNavItem" id="mn-faq" onclick="go('faq');closeMobileNav()">❓ FAQ</button>
+  <div class="mNavDivider"></div>
+  <button class="mNavItem" id="mn-support" onclick="go('support');closeMobileNav()">💬 Contact Support</button>
+  <button class="mNavItem" onclick="go('privacy');closeMobileNav()">🔒 Privacy Policy</button>
+  <button class="mNavItem" onclick="go('terms');closeMobileNav()">📄 Terms of Use</button>
+  <div class="mNavDivider"></div>
+  <div style="padding:10px 16px 0">
+    <div class="nStat" style="display:inline-flex"><div class="nDot"></div>All systems live</div>
+  </div>
+</div>
+
+<!-- ═══ HOME ═══ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hBadge">
+      <svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#2A7A50"/></svg>
+      International tracking enabled
+    </div>
+    <h1 class="hH1">Where is<br><em>your package?</em></h1>
+    <p class="hP">Enter your tracking number for live updates — from pickup in Namibia to your doorstep in the US.</p>
+  </div>
+
+  <div style="padding:0 2.5rem;max-width:620px;margin:0 auto;width:100%">
+    <div class="tCard">
+      <div class="tLbl">Enter tracking number</div>
+      <div class="tRow">
+        <div class="tGrp">
+          <span class="tPfx">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/></svg>
+          </span>
+          <input class="tIn" id="tIn" type="text" placeholder="e.g. TF-INT-2025-88302" autocomplete="off" spellcheck="false">
+        </div>
+        <button class="btnTr" id="tBtn" onclick="doTrack()">
+          <span class="bTxt">Track</span>
+          <svg class="bIco" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          <span class="sp"></span>
+        </button>
+      </div>
+      <div class="tMeta">
+        <div class="tHint"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg> Found in your confirmation email</div>
+        <div class="tEx">TF-INT-2025-88302</div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="resPanel">
+      <div class="resCard">
+        <!-- Route banner -->
+        <div class="rBanner">
+          <div>
+            <div class="rFlag">🇳🇦</div>
+            <div class="rCity">Origin</div>
+            <div class="rName">Windhoek, NAM</div>
+          </div>
+          <div class="rMid">
+            <div class="rBar">
+              <div class="rFill" id="rFill"></div>
+              <div class="rPlane" id="rPlane" style="position:absolute;right:-8px;top:-8px;font-size:15px">✈️</div>
+            </div>
+            <div class="rDist">~14,200 km · 10–16 day international transit</div>
+          </div>
+          <div class="rEnd">
+            <div class="rFlag">🇺🇸</div>
+            <div class="rCity" style="text-align:right">Destination</div>
+            <div class="rName">New York, USA</div>
+          </div>
+        </div>
+
+        <!-- Top -->
+        <div class="resTop">
+          <div>
+            <div class="resLbl">Tracking Number</div>
+            <div class="resId" id="resId">—</div>
+          </div>
+          <div class="sBadge tr" id="resBadge">
+            <span class="sBadgeDot"></span>
+            <span id="resBadgeTxt">In Transit</span>
+          </div>
+        </div>
+
+        <!-- Update notice -->
+        <div class="uNotice">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          <span id="uTxt">Last update: —</span>
+        </div>
+
+        <!-- Timeline -->
+        <div class="tlWrap">
+          <div class="tl" id="tl">
+            <div class="tlLine"></div>
+            <div class="tlFill" id="tlFill"></div>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="iGrid">
+          <div class="iCell"><div class="iKey">Estimated Delivery</div><div class="iVal hi" id="iEta">—</div></div>
+          <div class="iCell"><div class="iKey">Carrier</div><div class="iVal" id="iCarrier">—</div></div>
+          <div class="iCell"><div class="iKey">Service Level</div><div class="iVal" id="iSvc">—</div></div>
+          <div class="iCell"><div class="iKey">Weight / Dimensions</div><div class="iVal" id="iWt">—</div></div>
+          <div class="iCell"><div class="iKey">Ship Date</div><div class="iVal" id="iShip">—</div></div>
+          <div class="iCell"><div class="iKey">Current Location</div><div class="iVal" id="iLoc">—</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trBar">
+    <div class="trItem"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>256-bit SSL</div>
+    <div class="trItem"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Updated every 5 min</div>
+    <div class="trItem"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>24/7 Support</div>
+    <div class="trItem"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h5l2 3v4h-7V8z"/><circle cx="5.5" cy="18.5" r="1.5"/><circle cx="18.5" cy="18.5" r="1.5"/></svg>500+ Carriers</div>
+    <div class="trItem"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>Worldwide Coverage</div>
+  </div>
+
+  <footer><div class="ftI"><div class="ftLogo">TrackFlow</div><ul class="ftLinks"><li><a href="#" onclick="go('privacy');return false">Privacy Policy</a></li><li><a href="#" onclick="go('terms');return false">Terms of Use</a></li><li><a href="#" onclick="go('faq');return false">Help Center</a></li><li><a href="#" onclick="go('support');return false">Contact</a></li></ul><div class="ftCopy">© 2025 TrackFlow Inc.</div></div></footer>
+</div>
+
+<!-- ═══ MY ORDERS ═══ -->
+<div class="page" id="page-orders">
+  <div class="phdr"><div class="phdr-i"><div class="pbrow">Account</div><h1 class="ptitle">My <em>Orders</em></h1><p class="pdesc">Track and manage all your active and past shipments.</p></div></div>
+  <div class="wrap">
+    <div class="ordTabs">
+      <button class="ordTab on" onclick="ordTab(this,'oAct')">Active (1)</button>
+      <button class="ordTab" onclick="ordTab(this,'oPast')">Past Orders (0)</button>
+      <button class="ordTab" onclick="ordTab(this,'oCan')">Cancelled (0)</button>
+    </div>
+    <div id="oAct">
+      <div class="ordCard" onclick="go('home')">
+        <div class="ordImg">🎨</div>
+        <div class="ordInfo">
+          <div class="ordName">Custom Artisan Leather Goods — 2 items</div>
+          <div class="ordMeta">Order #ORD-2025-NAM-0031 · Placed Mar 3, 2025 · DHL Express International</div>
+        </div>
+        <div class="ordR">
+          <div class="ordPrice">$218.00</div>
+          <span class="tag amb"><span class="tagDot"></span>In Transit</span>
+        </div>
+      </div>
+      <div style="background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div style="font-size:1.3rem">📍</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.83rem;font-weight:600;color:var(--t1);margin-bottom:2px">Currently at OR Tambo Airport, Johannesburg — Export clearance processing</div>
+          <div style="font-size:.75rem;color:var(--t3);font-weight:300">Last update: Mar 9, 2025 · 02:14 AM UTC · Est. delivery: Mar 14–16</div>
+        </div>
+        <button class="btnS" onclick="go('home')">Track ↗</button>
+      </div>
+    </div>
+    <div id="oPast" style="display:none"><div class="emSt"><div class="emIco">📦</div><div class="emTtl">No past orders yet</div><div class="emDesc">Completed orders will appear here once delivered.</div></div></div>
+    <div id="oCan" style="display:none"><div class="emSt"><div class="emIco">✓</div><div class="emTtl">No cancellations</div><div class="emDesc">You haven't cancelled any orders.</div></div></div>
+  </div>
+  <footer><div class="ftI"><div class="ftLogo">TrackFlow</div><ul class="ftLinks"><li><a href="#" onclick="go('privacy');return false">Privacy</a></li><li><a href="#" onclick="go('terms');return false">Terms</a></li></ul><div class="ftCopy">© 2025 TrackFlow Inc.</div></div></footer>
+</div>
+
+<!-- ═══ RETURNS ═══ -->
+<div class="page" id="page-returns">
+  <div class="phdr"><div class="phdr-i"><div class="pbrow">Returns &amp; Refunds</div><h1 class="ptitle">Start a <em>Return</em></h1><p class="pdesc">Free returns within 30 days. Refund processed in 3–5 business days.</p></div></div>
+  <div class="wrap">
+    <div class="stepsRow">
+      <div class="stepCard"><div class="stepNum">01</div><div class="stepTtl">Submit your request</div><div class="stepD">Fill in the form with your order number and reason for return.</div></div>
+      <div class="stepCard"><div class="stepNum">02</div><div class="stepTtl">Print your label</div><div class="stepD">A prepaid return shipping label arrives in your email within minutes.</div></div>
+      <div class="stepCard"><div class="stepNum">03</div><div class="stepTtl">Drop off &amp; get refunded</div><div class="stepD">Drop at any carrier location. Refund issued within 3–5 business days.</div></div>
+    </div>
+    <div class="fCard">
+      <div class="fCardT">Return Request Form</div>
+      <div class="fCardS">All fields required. Return label arrives by email within 10 minutes of approval.</div>
+      <div class="fGrid">
+        <div class="fGrp"><label class="fLbl">Order Number</label><input class="fIn" id="retOrd" type="text" placeholder="e.g. ORD-2025-NAM-0031"></div>
+        <div class="fGrp"><label class="fLbl">Email Address</label><input class="fIn" id="retEmail" type="email" placeholder="you@example.com"></div>
+        <div class="fGrp"><label class="fLbl">Item Being Returned</label><input class="fIn" id="retItem" type="text" placeholder="Product name or description"></div>
+        <div class="fGrp"><label class="fLbl">Reason for Return</label>
+          <select class="fSel" id="retReason">
+            <option value="">Select a reason…</option>
+            <option>Item arrived damaged</option><option>Wrong item received</option>
+            <option>Does not match description</option><option>Changed my mind</option>
+            <option>Item is defective</option><option>Customs duty unexpected</option><option>Other</option>
+          </select>
+        </div>
+        <div class="fGrp full"><label class="fLbl">Additional Comments <span style="color:var(--t3);font-weight:300">(optional)</span></label><textarea class="fTa" id="retNote" placeholder="Describe the issue in more detail…"></textarea></div>
+      </div>
+      <button class="btnP" style="margin-top:8px" onclick="submitReturn()">Submit Return Request <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
+    </div>
+    <div class="secT">Return Policies</div>
+    <div class="polGrid">
+      <div class="polCard"><div class="polIco">📅</div><div class="polT">30-Day Window</div><div class="polD">Returns accepted within 30 days of confirmed delivery. Final sale items excluded.</div></div>
+      <div class="polCard"><div class="polIco">🚚</div><div class="polT">Free Return Shipping</div><div class="polD">We cover all return shipping costs on eligible items globally.</div></div>
+      <div class="polCard"><div class="polIco">💳</div><div class="polT">Fast Refunds</div><div class="polD">Refunds processed within 3–5 business days of receiving the return.</div></div>
+      <div class="polCard"><div class="polIco">🌍</div><div class="polT">International Returns</div><div class="polD">International return shipping covered. Customs fees on original delivery are non-refundable.</div></div>
+    </div>
+  </div>
+  <footer><div class="ftI"><div class="ftLogo">TrackFlow</div><ul class="ftLinks"><li><a href="#" onclick="go('privacy');return false">Privacy</a></li><li><a href="#" onclick="go('faq');return false">FAQ</a></li></ul><div class="ftCopy">© 2025 TrackFlow Inc.</div></div></footer>
+</div>
+
+<!-- ═══ FAQ ═══ -->
+<div class="page" id="page-faq">
+  <div class="phdr"><div class="phdr-i"><div class="pbrow">Help Center</div><h1 class="ptitle">Frequently Asked <em>Questions</em></h1><p class="pdesc">Everything about international tracking, customs, shipping timelines, and returns.</p></div></div>
+  <div class="wrap">
+    <div class="faqCats">
+      <button class="faqCat on" onclick="faqCat(this,'all')">All Topics</button>
+      <button class="faqCat" onclick="faqCat(this,'tracking')">Tracking</button>
+      <button class="faqCat" onclick="faqCat(this,'shipping')">Shipping &amp; Times</button>
+      <button class="faqCat" onclick="faqCat(this,'customs')">Customs &amp; Duties</button>
+      <button class="faqCat" onclick="faqCat(this,'returns')">Returns</button>
+      <button class="faqCat" onclick="faqCat(this,'account')">Account &amp; Orders</button>
+    </div>
+    <div class="faqList" id="faqList"></div>
+    <div class="faqCTA">
+      <div><div class="secT" style="margin-bottom:5px">Still have questions?</div><p>Our team is available 24/7. Average live chat response: under 2 minutes.</p></div>
+      <button class="btnP" onclick="go('support')">Contact Support <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
+    </div>
+  </div>
+  <footer><div class="ftI"><div class="ftLogo">TrackFlow</div><ul class="ftLinks"><li><a href="#" onclick="go('privacy');return false">Privacy</a></li><li><a href="#" onclick="go('returns');return false">Returns</a></li></ul><div class="ftCopy">© 2025 TrackFlow Inc.</div></div></footer>
+</div>
+
+<!-- ═══ SUPPORT ═══ -->
+<div class="page" id="page-support">
+  <div class="phdr"><div class="phdr-i"><div class="pbrow">Support</div><h1 class="ptitle">We're here to <em>help</em></h1><p class="pdesc">Choose how you'd like to reach us. We're available around the clock, every day.</p></div></div>
+  <div class="wrap">
+    <div class="chanGrid">
+      <div class="chan" onclick="showToast('Opening live chat window…')">
+        <div class="chanIco">💬</div><div class="chanT">Live Chat</div>
+        <div class="chanD">Real-time with a human agent. Fastest option for urgent issues.</div>
+        <span class="chanA">Online now · ~90 sec wait</span>
+      </div>
+      <div class="chan" onclick="showToast('Opening email client…')">
+        <div class="chanIco">✉️</div><div class="chanT">Email Support</div>
+        <div class="chanD">Send a detailed message. We reply within a few hours, every day.</div>
+        <span class="chanA">Avg. reply in 2–4 hours</span>
+      </div>
+      <div class="chan" onclick="showToast('Phone: 1-800-TRACKFLOW · Mon–Fri 9am–6pm EST')">
+        <div class="chanIco">📞</div><div class="chanT">Phone Support</div>
+        <div class="chanD">Speak directly with a specialist for complex shipment issues.</div>
+        <span class="chanA off">Mon–Fri · 9am–6pm EST</span>
+      </div>
+    </div>
+
+    <div class="fCard">
+      <div class="fCardT">Send us a message</div>
+      <div class="fCardS">We read every message and reply to your email within 2–4 hours. Messages are saved below for your reference.</div>
+      <div class="fGrid">
+        <div class="fGrp"><label class="fLbl">Your Name</label><input class="fIn" id="sName" type="text" placeholder="Jane Smith"></div>
+        <div class="fGrp"><label class="fLbl">Email Address</label><input class="fIn" id="sEmail" type="email" placeholder="jane@example.com"></div>
+        <div class="fGrp"><label class="fLbl">Tracking / Order Number <span style="color:var(--t3);font-weight:300">(optional)</span></label><input class="fIn" id="sOrder" type="text" placeholder="e.g. TF-INT-2025-44819"></div>
+        <div class="fGrp"><label class="fLbl">Subject</label>
+          <select class="fSel" id="sSubj">
+            <option value="">Select a topic…</option>
+            <option>Shipment tracking issue</option><option>Package not received</option>
+            <option>Customs / import query</option><option>Return or refund request</option>
+            <option>Damaged or wrong item</option><option>Change delivery address</option>
+            <option>Delivery delay concern</option><option>General enquiry</option>
+          </select>
+        </div>
+        <div class="fGrp full"><label class="fLbl">Message</label><textarea class="fTa" id="sMsg" placeholder="Describe your issue in detail. Include your tracking number if relevant." style="min-height:110px"></textarea></div>
+      </div>
+      <button class="btnP" style="margin-top:8px" onclick="submitMsg()">Send Message <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
+    </div>
+
+    <div class="inboxHdr">
+      <div class="secT" style="margin-bottom:0">Message Inbox <span id="inboxBadge"></span></div>
+      <button class="btnS" onclick="clearInbox()">Clear All</button>
+    </div>
+    <div id="inboxList"></div>
+
+    <div class="dv"></div>
+    <div class="hoursGrid">
+      <div class="hrsCard"><div class="hrsKey">Live Chat &amp; Email</div><div class="hrsVal">24 / 7 · 365 days a year</div><div class="hrsDesc">Always online. Average first response under 2 minutes via live chat.</div></div>
+      <div class="hrsCard"><div class="hrsKey">Phone Support</div><div class="hrsVal">1-800-TRACKFLOW</div><div class="hrsDesc">Monday – Friday · 9:00 AM – 6:00 PM Eastern Standard Time.</div></div>
+    </div>
+  </div>
+  <footer><div class="ftI"><div class="ftLogo">TrackFlow</div><ul class="ftLinks"><li><a href="#" onclick="go('privacy');return false">Privacy</a></li><li><a href="#" onclick="go('faq');return false">FAQ</a></li></ul><div class="ftCopy">© 2025 TrackFlow Inc.</div></div></footer>
+</div>
+
+<!-- ═══ PRIVACY POLICY ═══ -->
+<div class="page" id="page-privacy">
+  <div class="phdr"><div class="phdr-i"><div class="pbrow">Legal</div><h1 class="ptitle">Privacy <em>Policy</em></h1><p class="pdesc">How TrackFlow collects, uses, and protects your personal information.</p></div></div>
+  <div class="legalWrap">
+    <div class="legalLastUpdated">Last updated: March 1, 2025</div>
+
+    <div class="legalHighlight">
+      Your privacy matters to us. TrackFlow collects only the information necessary to provide our international shipment tracking and customer support services. We do not sell your personal data to third parties.
+    </div>
+
+    <div class="legalToc">
+      <div class="secT">Contents</div>
+      <ol>
+        <li><a href="#">1. Information We Collect</a></li>
+        <li><a href="#">2. How We Use Your Information</a></li>
+        <li><a href="#">3. Information Sharing</a></li>
+        <li><a href="#">4. Cookies &amp; Tracking Technologies</a></li>
+        <li><a href="#">5. Data Retention</a></li>
+        <li><a href="#">6. Your Rights</a></li>
+        <li><a href="#">7. International Data Transfers</a></li>
+        <li><a href="#">8. Security</a></li>
+        <li><a href="#">9. Children's Privacy</a></li>
+        <li><a href="#">10. Changes to This Policy</a></li>
+        <li><a href="#">11. Contact Us</a></li>
+      </ol>
+    </div>
+
+    <div class="legalSection">
+      <h2>1. Information We Collect</h2>
+      <p>We collect information you provide directly to us, information collected automatically when you use our services, and information received from third-party carriers and partners.</p>
+      <p><strong>Information you provide:</strong></p>
+      <ul>
+        <li>Name, email address, and phone number when you create an account or submit a support request</li>
+        <li>Shipping and billing addresses associated with your orders</li>
+        <li>Tracking numbers and order identifiers you enter into our platform</li>
+        <li>Communications you send us via support forms, live chat, or email</li>
+        <li>Return request details including order numbers, item descriptions, and stated reasons</li>
+      </ul>
+      <p><strong>Information collected automatically:</strong></p>
+      <ul>
+        <li>IP address, browser type, operating system, and device identifiers</li>
+        <li>Pages visited, time spent, clicks, and navigation paths within our platform</li>
+        <li>Referral URLs and search terms that led you to our site</li>
+        <li>Cookies and similar local storage technologies (see Section 4)</li>
+      </ul>
+      <p><strong>Information from third parties:</strong></p>
+      <ul>
+        <li>Shipment status updates, scan events, and delivery confirmations from DHL, FedEx, UPS, and other integrated carriers</li>
+        <li>Customs and border protection event data associated with your shipment</li>
+      </ul>
+    </div>
+
+    <div class="legalSection">
+      <h2>2. How We Use Your Information</h2>
+      <p>We use the information we collect to operate, improve, and personalise our services:</p>
+      <ul>
+        <li>Provide real-time shipment tracking and status updates</li>
+        <li>Process return requests and issue refunds</li>
+        <li>Send transactional notifications including tracking alerts, delivery confirmations, and support replies</li>
+        <li>Respond to your customer support enquiries</li>
+        <li>Detect, prevent, and investigate fraud, abuse, and security incidents</li>
+        <li>Analyse aggregate usage patterns to improve our platform and user experience</li>
+        <li>Comply with legal obligations, court orders, and lawful government requests</li>
+      </ul>
+      <p>We do not use your personal information for automated decision-making that produces significant legal effects without human oversight.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>3. Information Sharing</h2>
+      <p>TrackFlow does not sell, rent, or trade your personal information to any third party for their marketing purposes. We share information only in the following limited circumstances:</p>
+      <ul>
+        <li><strong>Carrier partners:</strong> We share tracking identifiers and necessary contact details with DHL and other carriers solely to facilitate delivery and resolve shipment issues</li>
+        <li><strong>Service providers:</strong> We engage trusted vendors (hosting, analytics, email delivery, payment processing) who process data on our behalf under strict data processing agreements</li>
+        <li><strong>Legal requirements:</strong> We may disclose information when required by law, regulation, or valid legal process, including from customs and border protection authorities in connection with international shipments</li>
+        <li><strong>Business transfers:</strong> In the event of a merger, acquisition, or sale of assets, your data may be transferred to the successor entity, with advance notice provided to you</li>
+        <li><strong>With your consent:</strong> We may share information for any other purpose with your explicit prior consent</li>
+      </ul>
+    </div>
+
+    <div class="legalSection">
+      <h2>4. Cookies &amp; Tracking Technologies</h2>
+      <p>We use cookies and similar technologies to enable core platform functionality, remember your preferences, and analyse how our services are used.</p>
+      <ul>
+        <li><strong>Essential cookies:</strong> Required for the platform to function (session management, security). Cannot be disabled.</li>
+        <li><strong>Functional cookies:</strong> Remember your preferences such as language, saved tracking numbers, and inbox messages stored locally in your browser.</li>
+        <li><strong>Analytics cookies:</strong> Help us understand aggregate usage patterns. We use privacy-preserving analytics and do not build individual behavioural profiles.</li>
+      </ul>
+      <p>You can manage cookie preferences through your browser settings. Disabling non-essential cookies will not affect your ability to use core tracking features.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>5. Data Retention</h2>
+      <p>We retain your personal information only for as long as necessary to fulfill the purposes described in this policy or as required by law:</p>
+      <ul>
+        <li>Account data is retained for the duration of your account plus 3 years after closure</li>
+        <li>Shipment tracking records are retained for 5 years to support returns, disputes, and regulatory compliance</li>
+        <li>Support communications are retained for 2 years</li>
+        <li>Analytics data is anonymised and aggregated after 13 months</li>
+      </ul>
+      <p>You may request deletion of your personal data at any time (see Section 6).</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>6. Your Rights</h2>
+      <p>Depending on your location, you may have the following rights regarding your personal information:</p>
+      <ul>
+        <li><strong>Access:</strong> Request a copy of the personal data we hold about you</li>
+        <li><strong>Correction:</strong> Request correction of inaccurate or incomplete data</li>
+        <li><strong>Deletion:</strong> Request deletion of your personal data ("right to be forgotten"), subject to legal retention requirements</li>
+        <li><strong>Portability:</strong> Receive your data in a structured, machine-readable format</li>
+        <li><strong>Objection:</strong> Object to processing of your data for direct marketing or based on our legitimate interests</li>
+        <li><strong>Restriction:</strong> Request restriction of processing in certain circumstances</li>
+        <li><strong>Withdraw consent:</strong> Withdraw consent at any time where processing is based on consent</li>
+      </ul>
+      <p>To exercise any of these rights, contact our privacy team at privacy@trackflow.com. We will respond within 30 days. You also have the right to lodge a complaint with your local data protection authority.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>7. International Data Transfers</h2>
+      <p>TrackFlow operates globally and your shipment data may be processed in countries other than your own — including the United States, European Union member states, and South Africa — in order to track your parcel through international carrier networks. We ensure that all international transfers are protected by appropriate safeguards, including Standard Contractual Clauses approved by the European Commission and equivalent mechanisms where applicable.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>8. Security</h2>
+      <p>We implement industry-standard technical and organisational security measures to protect your personal information against unauthorised access, alteration, disclosure, or destruction. These include 256-bit TLS encryption for all data in transit, encrypted storage for data at rest, access controls and role-based permissions, regular security audits and penetration testing, and incident response procedures.</p>
+      <p>No method of internet transmission is 100% secure. If you become aware of a security issue, please contact security@trackflow.com immediately.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>9. Children's Privacy</h2>
+      <p>Our services are not directed to children under the age of 16. We do not knowingly collect personal information from children under 16. If you believe we have inadvertently collected such information, please contact us and we will delete it promptly.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>10. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, or legal requirements. We will notify you of material changes by posting the updated policy on this page with a revised "Last Updated" date and, where appropriate, by sending an email notification. Your continued use of our services after changes take effect constitutes your acceptance of the updated policy.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>11. Contact Us</h2>
+      <p>For privacy-related questions, data requests, or concerns, please reach out to our Data Privacy Officer:</p>
+      <ul>
+        <li>Email: privacy@trackflow.com</li>
+        <li>Postal: TrackFlow Inc., Data Privacy Officer, 350 Fifth Avenue, New York, NY 10118, USA</li>
+        <li>Response time: Within 5 business days for general enquiries; 30 days for formal data requests</li>
+      </ul>
+    </div>
+
+    <div class="legalContact">
+      <div><div class="secT" style="margin-bottom:5px">Privacy questions?</div><p>Our Data Privacy Officer is available to assist with any concerns or data requests.</p></div>
+      <button class="btnP" onclick="go('support')">Contact Us <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
+    </div>
+  </div>
+  <footer><div class="ftI"><div class="ftLogo">TrackFlow</div><ul class="ftLinks"><li><a href="#" onclick="go('terms');return false">Terms of Use</a></li><li><a href="#" onclick="go('faq');return false">FAQ</a></li><li><a href="#" onclick="go('support');return false">Contact</a></li></ul><div class="ftCopy">© 2025 TrackFlow Inc.</div></div></footer>
+</div>
+
+<!-- ═══ TERMS OF USE ═══ -->
+<div class="page" id="page-terms">
+  <div class="phdr"><div class="phdr-i"><div class="pbrow">Legal</div><h1 class="ptitle">Terms of <em>Use</em></h1><p class="pdesc">The terms and conditions governing your use of the TrackFlow platform.</p></div></div>
+  <div class="legalWrap">
+    <div class="legalLastUpdated">Last updated: March 1, 2025</div>
+
+    <div class="legalHighlight">
+      Please read these Terms carefully before using TrackFlow. By accessing or using our platform, you agree to be bound by these Terms. If you do not agree, please do not use our services.
+    </div>
+
+    <div class="legalToc">
+      <div class="secT">Contents</div>
+      <ol>
+        <li><a href="#">1. Acceptance of Terms</a></li>
+        <li><a href="#">2. Description of Services</a></li>
+        <li><a href="#">3. Eligibility &amp; Account Registration</a></li>
+        <li><a href="#">4. Acceptable Use</a></li>
+        <li><a href="#">5. Tracking Information &amp; Accuracy</a></li>
+        <li><a href="#">6. Returns &amp; Refunds</a></li>
+        <li><a href="#">7. Intellectual Property</a></li>
+        <li><a href="#">8. Disclaimers</a></li>
+        <li><a href="#">9. Limitation of Liability</a></li>
+        <li><a href="#">10. Indemnification</a></li>
+        <li><a href="#">11. Governing Law &amp; Disputes</a></li>
+        <li><a href="#">12. Changes to Terms</a></li>
+        <li><a href="#">13. Contact</a></li>
+      </ol>
+    </div>
+
+    <div class="legalSection">
+      <h2>1. Acceptance of Terms</h2>
+      <p>These Terms of Use ("Terms") constitute a legally binding agreement between you ("User," "you," or "your") and TrackFlow Inc. ("TrackFlow," "we," "us," or "our") governing your access to and use of the TrackFlow website, mobile application, and related services (collectively, the "Platform").</p>
+      <p>By accessing our Platform, clicking "I Agree," submitting a tracking query, or otherwise using our services, you acknowledge that you have read, understood, and agree to be bound by these Terms and our Privacy Policy, which is incorporated herein by reference.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>2. Description of Services</h2>
+      <p>TrackFlow provides international shipment tracking, order management, returns processing, and related customer support services. Our Platform aggregates tracking data from third-party carrier networks including but not limited to DHL Express, FedEx, UPS, and regional postal services worldwide.</p>
+      <p>Our services include:</p>
+      <ul>
+        <li>Real-time and near-real-time shipment tracking across 500+ carrier networks</li>
+        <li>Order history management and delivery notifications</li>
+        <li>International returns processing and prepaid label issuance</li>
+        <li>Customer support via live chat, email, and telephone</li>
+        <li>Customs clearance status reporting and import duty information</li>
+      </ul>
+      <p>We reserve the right to modify, suspend, or discontinue any aspect of our services at any time with reasonable notice.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>3. Eligibility &amp; Account Registration</h2>
+      <p>You must be at least 18 years of age to use our Platform. By using TrackFlow, you represent and warrant that you meet this age requirement and have the legal capacity to enter into binding agreements in your jurisdiction.</p>
+      <p>If you register for an account, you agree to:</p>
+      <ul>
+        <li>Provide accurate, current, and complete registration information</li>
+        <li>Maintain the security of your account credentials and not share your password</li>
+        <li>Promptly notify us of any unauthorised use of your account</li>
+        <li>Accept responsibility for all activities occurring under your account</li>
+      </ul>
+      <p>We reserve the right to suspend or terminate accounts that contain false information or that are used in violation of these Terms.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>4. Acceptable Use</h2>
+      <p>You agree to use our Platform only for lawful purposes and in accordance with these Terms. You must not:</p>
+      <ul>
+        <li>Use the Platform to facilitate the shipment of prohibited, illegal, or restricted goods under applicable laws</li>
+        <li>Attempt to gain unauthorised access to any part of the Platform, our servers, or connected networks</li>
+        <li>Transmit viruses, malware, or any other harmful code</li>
+        <li>Scrape, crawl, or systematically extract data from our Platform without written permission</li>
+        <li>Impersonate any person or entity or falsely represent your affiliation with any person or entity</li>
+        <li>Submit false tracking queries, fraudulent return requests, or misleading support communications</li>
+        <li>Use our services in any manner that could disable, overburden, or impair the Platform's functionality</li>
+      </ul>
+      <p>Violation of these provisions may result in immediate account termination and may be reported to relevant authorities.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>5. Tracking Information &amp; Accuracy</h2>
+      <p>Tracking information displayed on our Platform is sourced from third-party carrier systems. While we strive to present accurate and timely information, TrackFlow makes no representations or warranties regarding the completeness, accuracy, or timeliness of tracking data. Tracking events are only recorded at physical carrier scan points, and gaps of multiple days between events are normal for international shipments, particularly during long-haul flights and customs processing.</p>
+      <p>Estimated delivery dates are projections based on historical carrier performance and standard transit times. They are not guaranteed delivery commitments. Actual delivery may vary due to customs delays, weather events, carrier operational conditions, or other factors outside TrackFlow's control.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>6. Returns &amp; Refunds</h2>
+      <p>Our returns and refund policies are detailed on the Returns page of the Platform. Key terms include:</p>
+      <ul>
+        <li>Returns are accepted within 30 days of confirmed delivery for eligible items</li>
+        <li>International customs and import duties paid on the original delivery are non-refundable</li>
+        <li>Refunds are processed within 3–5 business days of receipt and inspection of the returned item</li>
+        <li>Items marked as final sale, perishable, or custom-made are ineligible for return unless defective</li>
+        <li>Prepaid return labels must be obtained through our Platform; independently arranged return shipping costs will not be reimbursed for international orders</li>
+      </ul>
+    </div>
+
+    <div class="legalSection">
+      <h2>7. Intellectual Property</h2>
+      <p>The TrackFlow Platform, including its design, logos, user interface, software, text, graphics, and all other content (collectively, "TrackFlow Content"), is owned by or licensed to TrackFlow Inc. and is protected by copyright, trademark, and other intellectual property laws.</p>
+      <p>You are granted a limited, non-exclusive, non-transferable, revocable licence to access and use the Platform for your personal, non-commercial purposes. This licence does not include the right to reproduce, distribute, modify, create derivative works, publicly display, or commercially exploit any TrackFlow Content without our express written consent.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>8. Disclaimers</h2>
+      <p>THE PLATFORM AND ALL SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, TRACKFLOW DISCLAIMS ALL WARRANTIES INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
+      <p>TrackFlow does not warrant that the Platform will be uninterrupted, error-free, or free of viruses or other harmful components. We do not warrant the accuracy or completeness of any tracking information, delivery estimates, or customs data displayed on the Platform.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>9. Limitation of Liability</h2>
+      <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, TRACKFLOW INC. AND ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, AND PARTNERS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, GOODWILL, OR BUSINESS OPPORTUNITY, ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THE PLATFORM OR SERVICES.</p>
+      <p>Our total cumulative liability to you for any claims arising under or related to these Terms shall not exceed the greater of (a) the total fees paid by you to TrackFlow in the 12 months preceding the claim, or (b) USD $100.</p>
+      <p>Some jurisdictions do not allow the exclusion or limitation of certain types of damages; in such jurisdictions, our liability is limited to the greatest extent permitted by law.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>10. Indemnification</h2>
+      <p>You agree to indemnify, defend, and hold harmless TrackFlow Inc. and its affiliates, officers, directors, employees, agents, and licensors from and against any claims, liabilities, damages, losses, costs, and expenses (including reasonable attorneys' fees) arising out of or in connection with: (a) your use of or access to the Platform; (b) your violation of these Terms; (c) your violation of any applicable law or regulation; or (d) any content or information you submit through the Platform.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>11. Governing Law &amp; Disputes</h2>
+      <p>These Terms shall be governed by and construed in accordance with the laws of the State of New York, United States, without regard to its conflict of law provisions.</p>
+      <p>Any dispute, controversy, or claim arising out of or relating to these Terms or your use of the Platform shall be resolved by binding arbitration administered by the American Arbitration Association (AAA) under its Commercial Arbitration Rules. The arbitration shall take place in New York, NY. Judgment on any arbitration award may be entered in any court of competent jurisdiction.</p>
+      <p>Notwithstanding the foregoing, either party may seek injunctive or other equitable relief in any court of competent jurisdiction to prevent irreparable harm. You also retain the right to bring individual claims in small claims court.</p>
+      <p>By using our services, you waive any right to participate in a class action lawsuit or class-wide arbitration against TrackFlow.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>12. Changes to Terms</h2>
+      <p>We may revise these Terms from time to time. When we make material changes, we will update the "Last Updated" date at the top of this page and, where required by applicable law, provide additional notice (such as an email notification or in-platform alert). Your continued use of the Platform after any changes become effective constitutes your agreement to the revised Terms. If you do not agree to the updated Terms, you must stop using our services.</p>
+    </div>
+
+    <div class="legalSection">
+      <h2>13. Contact</h2>
+      <p>For questions about these Terms of Use, please contact our legal team:</p>
+      <ul>
+        <li>Email: legal@trackflow.com</li>
+        <li>Postal: TrackFlow Inc., Legal Department, 350 Fifth Avenue, New York, NY 10118, USA</li>
+        <li>General enquiries: support@trackflow.com</li>
+      </ul>
+    </div>
+
+    <div class="legalContact">
+      <div><div class="secT" style="margin-bottom:5px">Legal questions?</div><p>Our team is happy to clarify any aspect of these terms.</p></div>
+      <button class="btnP" onclick="go('support')">Contact Us <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
+    </div>
+  </div>
+  <footer><div class="ftI"><div class="ftLogo">TrackFlow</div><ul class="ftLinks"><li><a href="#" onclick="go('privacy');return false">Privacy Policy</a></li><li><a href="#" onclick="go('faq');return false">FAQ</a></li><li><a href="#" onclick="go('support');return false">Contact</a></li></ul><div class="ftCopy">© 2025 TrackFlow Inc.</div></div></footer>
+</div>
+
+<div class="toast" id="toast">
+  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<script>
+/* ═══ FAQ DATA ═══ */
+const FAQS=[
+  {cat:'tracking',q:"Where do I find my tracking number?",a:"Your tracking number is in the order confirmation email sent to your address at checkout. It follows the format TF-INT-YYYY-XXXXX. You can also find it in My Orders if you're signed in. Tracking typically activates 12–24 hours after the parcel is physically collected by the carrier."},
+  {cat:'tracking',q:"Why hasn't my tracking updated in a few days?",a:"This is very common for international shipments, especially during long-haul flights, weekends, or when a parcel is at an international hub awaiting the next flight. Tracking events are only logged at physical scan points. Gaps of 1–3 days between updates are completely normal. If no update for more than 7 business days, contact our support team."},
+  {cat:'tracking',q:"My status says 'Customs Clearance' — how long does that take?",a:"US Customs & Border Protection (CBP) clearance for shipments from Southern Africa typically takes 1–3 business days. If additional documentation is required, it can take up to 5 days. DHL will contact you directly if CBP requires any action on your part. No action is required from you unless DHL or CBP explicitly request it."},
+  {cat:'tracking',q:"The tracking says 'Delivered' but I haven't received it.",a:"First check with neighbours, your building manager, or any secure spots on your property — carriers sometimes place parcels in safe locations before updating the system. Wait 24 hours, as GPS updates can occasionally precede physical delivery. If still missing after 24 hours, contact us immediately and we'll file a carrier claim and arrange a replacement or full refund."},
+  {cat:'tracking',q:"Can I get SMS or email notifications for tracking updates?",a:"Yes. After tracking your shipment, scroll to the bottom of the result and click 'Enable Notifications'. You can choose email or SMS alerts for every scan event, or just key milestones like customs clearance and out-for-delivery. Notifications are free and can be turned off at any time."},
+  {cat:'shipping',q:"How long does shipping from Namibia to the USA take?",a:"Shipments from Windhoek, Namibia to the US travel approximately 14,200 km and typically take 10–16 business days with DHL Express International. The route is: Windhoek → Johannesburg by regional flight (~2 hrs), Johannesburg → Frankfurt or Dubai by DHL long-haul cargo (~10 hrs), Frankfurt → Cincinnati US hub (~9 hrs), then Cincinnati → your city for last-mile delivery (1–2 days). Customs processing at each border adds 1–3 days."},
+  {cat:'shipping',q:"Why does my package route through Frankfurt, Germany?",a:"Southern Africa does not have direct cargo routes to the US East Coast. DHL consolidates freight from the African continent at their hub at Frankfurt Airport (FRA), one of the world's largest cargo airports. From Frankfurt, your parcel is loaded onto a transatlantic flight to DHL's North American gateway in Cincinnati/Covington, KY. This routing is standard for all DHL Express shipments from the SADC region."},
+  {cat:'shipping',q:"My estimated delivery window is a range — which day should I expect it?",a:"Delivery windows account for customs processing time, carrier volume, and local last-mile logistics. The earliest date assumes standard customs clearance (1–2 days); the latest accounts for peak-volume delays at distribution centers. Most shipments arrive within the first two days of the given window. You'll receive an 'Out for Delivery' notification the morning of your delivery day."},
+  {cat:'shipping',q:"What happens if nobody is home when delivery is attempted?",a:"DHL will leave a delivery notice card and attempt redelivery the following business day. After two failed attempts, the parcel is held at your nearest DHL ServicePoint for up to 7 calendar days. You can also proactively reschedule, redirect to a neighbour, or choose a pickup point using the free DHL On Demand Delivery service — a link is included in your DHL notification email."},
+  {cat:'shipping',q:"Can I change my delivery address after the shipment has left Namibia?",a:"Once a shipment is in international transit, address changes are very difficult and cannot be guaranteed. Contact our support team immediately with your tracking number and new address — we will attempt to coordinate a redirection with DHL. There may be a redirection fee charged by DHL for in-transit address changes. For domestic US-only changes, DHL's On Demand Delivery app may offer a paid redirect option."},
+  {cat:'customs',q:"Will I have to pay customs duties or import taxes?",a:"Shipments from Namibia are subject to review by US Customs & Border Protection (CBP). Under the US Section 321 de minimis rule, shipments valued under $800 USD typically enter duty-free for personal use. If your shipment is over $800 or classified as commercial goods, import duties may apply. DHL will contact you directly to collect any assessed duties before releasing the shipment for delivery."},
+  {cat:'customs',q:"What documents travel with my international shipment?",a:"Your shipment is accompanied by a commercial invoice, packing list, DHL airway bill (AWB), and applicable export/import permits. These are prepared by the seller and DHL. You do not need to submit any documents unless CBP specifically requests them — in which case DHL will reach out with clear instructions."},
+  {cat:'customs',q:"Can I expedite customs clearance?",a:"Customs processing timelines are controlled by US CBP and cannot be expedited by TrackFlow or DHL. However, ensuring your contact details are accurate and responding promptly to any DHL notifications will prevent unnecessary holds. If clearance takes more than 5 business days without explanation, please contact our support team and we will escalate with DHL on your behalf."},
+  {cat:'customs',q:"My package was held at customs — what should I do?",a:"A customs hold does not necessarily mean there's a problem. CBP performs routine random inspections on all international shipments. If additional documentation is required, DHL will email you directly with specific instructions. If your tracking shows 'Held at Customs' for more than 4 business days without any communication from DHL, contact our support team immediately and we'll investigate."},
+  {cat:'returns',q:"How do I start a return for an international order?",a:"Go to the Returns page, fill in your order number and return reason, and submit. Because this is an international return, our team manually reviews and issues a prepaid international return label within 24 hours. Do not ship the item back without a prepaid label — we cannot reimburse independently arranged return shipping for international orders."},
+  {cat:'returns',q:"How long does a refund take for an international order?",a:"Once we receive and inspect the returned item, refunds are processed within 3–5 business days. Due to international banking clearing times, the credit may take an additional 3–7 business days to appear in your account. You'll receive email confirmations at: return received, inspection complete, refund initiated, and refund credited."},
+  {cat:'returns',q:"My item arrived damaged — what do I do?",a:"We're very sorry. Please photograph the damage and the packaging immediately upon opening, then contact our support team within 48 hours of delivery. Send photos through the support form. You are not required to return a damaged item — we will either send a replacement or issue a full refund at your choice. All international shipments include carrier insurance."},
+  {cat:'account',q:"Can I track my order without creating an account?",a:"Absolutely. Simply enter your tracking number on the Track Order page. No account is required. You'll see the full tracking history, current status, estimated delivery, and shipment details instantly."},
+  {cat:'account',q:"How do I create an account?",a:"Click 'Sign Up' in the top right corner of any page. Creating a free account lets you save tracking numbers, receive push notifications for every shipment update, manage returns, and view your complete order history — all in one dashboard."},
+];
+
+function buildFAQ(filter) {
+  const list = document.getElementById('faqList');
+  list.innerHTML = '';
+  const items = filter === 'all' ? FAQS : FAQS.filter(f => f.cat === filter);
+  items.forEach(f => {
+    const d = document.createElement('div');
+    d.className = 'faqItem';
+    d.innerHTML = `<button class="faqQ" onclick="faqToggle(this.parentElement)">${f.q}<span class="faqIco">+</span></button><div class="faqA">${f.a}</div>`;
+    list.appendChild(d);
+  });
+}
+
+function faqToggle(item) {
+  const open = item.classList.contains('open');
+  document.querySelectorAll('.faqItem.open').forEach(e => e.classList.remove('open'));
+  if (!open) item.classList.add('open');
+}
+
+function faqCat(btn, cat) {
+  document.querySelectorAll('.faqCat').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  buildFAQ(cat);
+}
+
+/* ═══ HAMBURGER / MOBILE NAV ═══ */
+function toggleMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const btn = document.getElementById('hamburger');
+  const isOpen = nav.classList.contains('open');
+  if (isOpen) {
+    nav.classList.remove('open');
+    btn.classList.remove('open');
+    btn.setAttribute('aria-expanded','false');
+  } else {
+    nav.classList.add('open');
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded','true');
+  }
+}
+
+function closeMobileNav() {
+  document.getElementById('mobileNav').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('hamburger').setAttribute('aria-expanded','false');
+}
+
+/* close on outside click */
+document.addEventListener('click', function(e) {
+  const nav = document.getElementById('mobileNav');
+  const btn = document.getElementById('hamburger');
+  if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+    closeMobileNav();
+  }
+});
+
+/* close on resize to desktop */
+window.addEventListener('resize', function() {
+  if (window.innerWidth > 640) closeMobileNav();
+});
+
+/* ═══ ROUTING ═══ */
+const PAGES = ['home','orders','returns','faq','support','privacy','terms'];
+function go(id) {
+  PAGES.forEach(p => {
+    document.getElementById('page-'+p).classList.remove('active');
+    const n = document.getElementById('nl-'+p);
+    if (n) n.classList.remove('on');
+    const mn = document.getElementById('mn-'+p);
+    if (mn) mn.classList.remove('on');
+  });
+  document.getElementById('page-'+id).classList.add('active');
+  const n = document.getElementById('nl-'+id);
+  if (n) n.classList.add('on');
+  const mn = document.getElementById('mn-'+id);
+  if (mn) mn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if (id === 'support') renderInbox();
+}
+
+/* ═══ TRACKING ═══ */
+function nodeIcon(state) {
+  if (state === 'done')
+    return `<svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.8"><polyline points="20 6 9 17 4 12"/></svg>`;
+  if (state === 'active')
+    return `<svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`;
+  if (state === 'cust')
+    return `<svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>`;
+  return '';
+}
+
+function buildTimeline(steps) {
+  const tl = document.getElementById('tl');
+  tl.querySelectorAll('.tlRow').forEach(n => n.remove());
+  const activeIdx = steps.findIndex(s => s.state === 'active' || s.state === 'cust');
+  steps.forEach((s) => {
+    const row = document.createElement('div');
+    row.className = 'tlRow';
+    row.innerHTML = `
+      <div class="tlNode ${s.state}">${nodeIcon(s.state)}</div>
+      <div class="tlInfo">
+        <div class="tlName ${s.state==='pending'?'dim':''}">${s.label}</div>
+        <div class="tlNote">${s.loc}${s.note?' · '+s.note:''}</div>
+      </div>
+      <div class="tlTime">${s.time}</div>`;
+    tl.appendChild(row);
+  });
+  setTimeout(() => {
+    const fill = document.getElementById('tlFill');
+    const h = tl.offsetHeight - 32;
+    const pct = activeIdx >= 0 ? activeIdx / (steps.length - 1) : 0;
+    fill.style.height = (pct * h) + 'px';
+  }, 120);
+}
+
+function runLoader(cb) {
+  const ov = document.getElementById('ldOv');
+  ov.classList.add('show');
+  const ids = ['ls0','ls1','ls2','ls3'];
+  const delays = [0, 700, 1350, 2000];
+  ids.forEach((id, i) => {
+    setTimeout(() => {
+      if (i > 0) { document.getElementById(ids[i-1]).classList.remove('act'); document.getElementById(ids[i-1]).classList.add('done'); }
+      document.getElementById(id).classList.add('act');
+    }, delays[i]);
+  });
+  setTimeout(() => { document.getElementById('ls3').classList.remove('act'); document.getElementById('ls3').classList.add('done'); }, 2700);
+  setTimeout(() => {
+    ov.classList.remove('show');
+    ids.forEach(id => { document.getElementById(id).classList.remove('act','done'); });
+    cb();
+  }, 3000);
+}
+
+function doTrack() {
+  const inp = document.getElementById('tIn');
+  const raw = inp.value.trim();
+  if (!raw) { inp.classList.add('shake'); setTimeout(() => inp.classList.remove('shake'), 500); return; }
+  if (raw.toUpperCase() !== SHIPMENT.trackingNumber) {
+  runLoader(() => {
+    inp.classList.add('shake');
+    setTimeout(() => inp.classList.remove('shake'), 500);
+    showToast('Tracking number not found.', true);
+  });
+  return;
+}
+  document.getElementById('resPanel').style.display = 'none';
+  runLoader(() => {
+    document.getElementById('resId').textContent    = raw.toUpperCase();
+    document.getElementById('iEta').textContent     = SHIPMENT.eta;
+    document.getElementById('iCarrier').textContent = SHIPMENT.carrier;
+    document.getElementById('iSvc').textContent     = SHIPMENT.service;
+    document.getElementById('iWt').textContent      = SHIPMENT.weight + ' · ' + SHIPMENT.dimensions;
+    document.getElementById('iShip').textContent    = SHIPMENT.shipDate;
+    document.getElementById('iLoc').textContent     = SHIPMENT.lastLocation;
+    document.getElementById('uTxt').textContent     = 'Last update: ' + SHIPMENT.lastUpdate + ' · ' + SHIPMENT.lastLocation;
+    const active = SHIPMENT.steps[SHIPMENT.currentStep];
+    const badge = document.getElementById('resBadge');
+    const lbl = active ? active.label : 'In Transit';
+    badge.className = 'sBadge ' + (lbl.toLowerCase().includes('customs') ? 'cu' : 'tr');
+    document.getElementById('resBadgeTxt').textContent = lbl;
+    setTimeout(() => {
+      const pct = SHIPMENT.routeProgressPct;
+      document.getElementById('rFill').style.width = pct + '%';
+      const plane = document.getElementById('rPlane');
+      plane.style.position = 'absolute';
+      plane.style.left = 'calc(' + pct + '% - 8px)';
+      plane.style.right = 'auto';
+    }, 300);
+    buildTimeline(SHIPMENT.steps);
+    const panel = document.getElementById('resPanel');
+    panel.style.display = 'block';
+    panel.style.animation = 'none';
+    requestAnimationFrame(() => { panel.style.animation = 'pgIn .45s ease both'; });
+    setTimeout(() => panel.scrollIntoView({ behavior:'smooth', block:'nearest' }), 120);
+  });
+}
+
+document.getElementById('tIn').addEventListener('keydown', e => { if (e.key === 'Enter') doTrack(); });
+
+/* ═══ ORDERS TABS ═══ */
+function ordTab(btn, id) {
+  document.querySelectorAll('.ordTab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  ['oAct','oPast','oCan'].forEach(t => { document.getElementById(t).style.display = t === id ? 'block' : 'none'; });
+}
+
+/* ═══ RETURNS ═══ */
+function submitReturn() {
+  const ord = document.getElementById('retOrd').value.trim();
+  const email = document.getElementById('retEmail').value.trim();
+  const item = document.getElementById('retItem').value.trim();
+  const reason = document.getElementById('retReason').value;
+  if (!ord || !email || !item || !reason) { showToast('Please fill in all required fields.', true); return; }
+  saveMsgLS({ id: Date.now(), name: 'Return Request', email, subject: 'Return — ' + ord,
+    message: `Order: ${ord}\nItem: ${item}\nReason: ${reason}\nNote: ${document.getElementById('retNote').value}`,
+    time: new Date().toLocaleString(), type: 'return' });
+  ['retOrd','retEmail','retItem','retNote'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('retReason').value = '';
+  showToast('Return submitted! A prepaid label will arrive in your email shortly.');
+}
+
+/* ═══ SUPPORT ═══ */
+function submitMsg() {
+  const name = document.getElementById('sName').value.trim();
+  const email = document.getElementById('sEmail').value.trim();
+  const subj = document.getElementById('sSubj').value;
+  const msg = document.getElementById('sMsg').value.trim();
+  if (!name || !email || !subj || !msg) { showToast('Please fill in all required fields.', true); return; }
+  saveMsgLS({ id: Date.now(), name, email,
+    order: document.getElementById('sOrder').value.trim() || '—',
+    subject: subj, message: msg, time: new Date().toLocaleString(), type: 'support' });
+  ['sName','sEmail','sOrder','sMsg'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('sSubj').value = '';
+  renderInbox();
+  showToast('Message sent! We\'ll reply to ' + email + ' within 2–4 hours.');
+}
+
+/* ═══ INBOX ═══ */
+function getMsgs() { try { return JSON.parse(localStorage.getItem(MSGS_KEY) || '[]'); } catch(e) { return []; } }
+function saveMsgLS(m) { const a = getMsgs(); a.unshift(m); localStorage.setItem(MSGS_KEY, JSON.stringify(a)); }
+function clearInbox() { localStorage.removeItem(MSGS_KEY); renderInbox(); showToast('Inbox cleared.'); }
+function renderInbox() {
+  const list = document.getElementById('inboxList');
+  const msgs = getMsgs();
+  document.getElementById('inboxBadge').innerHTML = msgs.length ? `<span class="inboxBadge">${msgs.length}</span>` : '';
+  if (!msgs.length) { list.innerHTML = '<div class="inboxEmpty">No messages yet. Messages submitted here are saved so you can review them later.</div>'; return; }
+  list.innerHTML = msgs.map(m => `
+    <div class="inboxMsg">
+      <div class="inboxTop">
+        <div class="inboxName">${m.name} <span style="font-size:.71rem;color:var(--t3);font-weight:300">&lt;${m.email}&gt;</span></div>
+        <div class="inboxTime">${m.time}</div>
+      </div>
+      <div class="inboxSubj">${m.subject}</div>
+      <div class="inboxPrev">${m.message.substring(0,110)}${m.message.length>110?'…':''}</div>
+    </div>`).join('');
+}
+
+/* ═══ TOAST ═══ */
+let _tt;
+function showToast(msg, isErr) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.className = 'toast' + (isErr ? ' err' : '');
+  void t.offsetWidth; t.classList.add('show');
+  clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 3800);
+}
+
+/* ═══ INIT ═══ */
+buildFAQ('all');
+go('home');
+</script>
+</body>
+</html>
