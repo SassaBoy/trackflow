@@ -741,7 +741,7 @@ const MSGS_KEY = "trackflow_msgs_v2";
       <div class="fGrid">
         <div class="fGrp"><label class="fLbl">Your Name</label><input class="fIn" id="sName" type="text" placeholder="Jane Smith"></div>
         <div class="fGrp"><label class="fLbl">Email Address</label><input class="fIn" id="sEmail" type="email" placeholder="jane@example.com"></div>
-        <div class="fGrp"><label class="fLbl">Tracking / Order Number <span style="color:var(--t3);font-weight:300">(optional)</span></label><input class="fIn" id="sOrder" type="text" placeholder="e.g. TF-INT-2025-44819"></div>
+        <div class="fGrp"><label class="fLbl">Tracking / Order Number <span style="color:var(--t3);font-weight:300">(optional)</span></label><input class="fIn" id="sOrder" type="text" placeholder="e.g. TF-INT-2025-88302"></div>
         <div class="fGrp"><label class="fLbl">Subject</label>
           <select class="fSel" id="sSubj">
             <option value="">Select a topic…</option>
@@ -1324,12 +1324,12 @@ function submitMsg() {
 }
 
 /* ═══ INBOX ═══ */
-function getMsgs() { try { return JSON.parse(localStorage.getItem(MSGS_KEY) || '[]'); } catch(e) { return []; } }
-function saveMsgLS(m) { const a = getMsgs(); a.unshift(m); localStorage.setItem(MSGS_KEY, JSON.stringify(a)); }
+async function getMsgs() { try { const r = await window.storage.get(MSGS_KEY, true); return r ? JSON.parse(r.value) : []; } catch(e) { return []; } }
+async function saveMsgLS(m) { const a = await getMsgs(); a.unshift(m); await window.storage.set(MSGS_KEY, JSON.stringify(a), true); }
 function clearInbox() { localStorage.removeItem(MSGS_KEY); renderInbox(); showToast('Inbox cleared.'); }
-function renderInbox() {
+async function renderInbox() {
   const list = document.getElementById('inboxList');
-  const msgs = getMsgs();
+  const msgs = await getMsgs();
   document.getElementById('inboxBadge').innerHTML = msgs.length ? `<span class="inboxBadge">${msgs.length}</span>` : '';
   if (!msgs.length) { list.innerHTML = '<div class="inboxEmpty">No messages yet. Messages submitted here are saved so you can review them later.</div>'; return; }
   list.innerHTML = msgs.map(m => `
