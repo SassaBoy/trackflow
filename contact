@@ -1015,15 +1015,8 @@ const MSGS_KEY = "trackflow_msgs_v2";
       <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, or legal requirements. We will notify you of material changes by posting the updated policy on this page with a revised "Last Updated" date and, where appropriate, by sending an email notification. Your continued use of our services after changes take effect constitutes your acceptance of the updated policy.</p>
     </div>
 
-    <div class="legalSection">
-      <h2>11. Contact Us</h2>
-      <p>For privacy-related questions, data requests, or concerns, please reach out to our Data Privacy Officer:</p>
-      <ul>
-        <li>Email: privacy@trackflow.com</li>
-        <li>Postal: TrackFlow Inc., Data Privacy Officer, 350 Fifth Avenue, New York, NY 10118, USA</li>
-        <li>Response time: Within 5 business days for general enquiries; 30 days for formal data requests</li>
-      </ul>
-    </div>
+
+    
 
     <div class="legalContact">
       <div><div class="secT" style="margin-bottom:5px">Privacy questions?</div><p>Our Data Privacy Officer is available to assist with any concerns or data requests.</p></div>
@@ -1465,3 +1458,4 @@ go('home');
 </script>
 </body>
 </html>
+
