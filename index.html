@@ -440,12 +440,12 @@ const SHIPMENT = {
 
   orderDate: "9 March 2026",
 
-  currentStep: 4,
+  currentStep: 5,
 
-  lastUpdate: "9 Mar 2026 · 11:05 AM UTC",
-  lastLocation: "Hosea Kutako International Airport (WDH), Namibia",
+ lastUpdate: "9 Mar 2026 · 06:00 PM UTC",
+lastLocation: "Johannesburg International Cargo Hub, South Africa",
 
-  routeProgressPct: 20,
+  routeProgressPct: 28,
 
   steps: [
 
@@ -486,22 +486,22 @@ const SHIPMENT = {
       loc: "Johannesburg Air Cargo Hub, South Africa",
       note: "Shipment in transit to international routing hub",
       time: "9 Mar 2026 · 11:05 AM UTC",
-      state: "active"
-    },
+state: "done"
+},
 
-    {
-      label: "Export Clearance & International Departure",
+{
+  label: "Export Clearance & International Departure",
       loc: "Johannesburg International Cargo Hub",
       note: "Preparing for long-haul international flight",
-      time: "Estimated 9 Mar 2026 · 06:00 PM UTC",
-      state: "pending"
-    },
+time: "9 Mar 2026 · 06:00 PM UTC",
+state: "active"
+},
 
-    {
-      label: "Transit Hub — Frankfurt",
+{
+  label: "Transit Hub — Frankfurt",
       loc: "Frankfurt International Cargo Hub, Germany",
       note: "Transit stop for North American routing",
-      time: "Estimated 10 Mar 2026 · 05:30 AM UTC",
+      time: "10 Mar 2026 · 05:30 AM UTC",
       state: "pending"
     },
 
@@ -509,7 +509,7 @@ const SHIPMENT = {
       label: "Transatlantic Flight",
       loc: "Frankfurt → Cincinnati International Hub",
       note: "International cargo flight to North America",
-      time: "Estimated 10 Mar 2026 · 08:00 AM UTC",
+      time: "10 Mar 2026 · 08:00 AM UTC",
       state: "pending"
     },
 
@@ -517,7 +517,7 @@ const SHIPMENT = {
       label: "US Customs Processing",
       loc: "Cincinnati International Cargo Hub, USA",
       note: "Import inspection and customs clearance",
-      time: "Estimated 11 Mar 2026 · 03:00 AM UTC",
+      time: "11 Mar 2026 · 03:00 AM UTC",
       state: "pending"
     },
 
@@ -525,7 +525,7 @@ const SHIPMENT = {
       label: "Dispatched to Florida Distribution Center",
       loc: "Cincinnati → Miami Logistics Network",
       note: "Transferred to Florida regional delivery network",
-      time: "Estimated 11 Mar 2026 · 08:30 PM UTC",
+      time: "11 Mar 2026 · 08:30 PM UTC",
       state: "pending"
     },
 
@@ -533,7 +533,7 @@ const SHIPMENT = {
       label: "Arrived at Local Delivery Facility",
       loc: "Miami Regional Distribution Facility, Florida",
       note: "Shipment prepared for final delivery route",
-      time: "Estimated 12 Mar 2026 · 10:00 AM UTC",
+      time: "12 Mar 2026 · 10:00 AM UTC",
       state: "pending"
     },
 
@@ -541,7 +541,7 @@ const SHIPMENT = {
       label: "Out for Delivery",
       loc: "Aventura, FL Delivery Route",
       note: "Courier assigned and out for delivery",
-      time: "Estimated 12–13 Mar 2026",
+      time: "12–13 Mar 2026",
       state: "pending"
     },
 
@@ -549,7 +549,7 @@ const SHIPMENT = {
       label: "Delivered",
       loc: "Aventura, FL, USA",
       note: "Delivered to receiver address",
-      time: "Estimated 12–14 March 2026",
+      time: "12–14 March 2026",
       state: "pending"
     }
   ]
@@ -736,8 +736,8 @@ const MSGS_KEY = "trackflow_msgs_v2";
       <div class="ordCard" onclick="go('home')">
         <div class="ordImg">🎨</div>
         <div class="ordInfo">
-          <div class="ordName">Custom Artisan Leather Goods — 2 items</div>
-          <div class="ordMeta">Order #ORD-2025-NAM-0031 · Placed Mar 3, 2025 · DHL Express International</div>
+     <div class="ordName">Sealed Parcel — "Private Cargo"</div>
+          <div class="ordMeta">Order #ORD-2026-NAM-0031 · Placed Mar 9, 2026 · DHL Express International</div>
         </div>
         <div class="ordR">
           <div class="ordPrice">$218.00</div>
