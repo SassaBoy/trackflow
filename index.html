@@ -1342,33 +1342,7 @@ function doTrack() {
 }
   document.getElementById('resPanel').style.display = 'none';
   runLoader(() => {
-    document.getElementById('resId').textContent    = raw.toUpperCase();
-    document.getElementById('iEta').textContent     = SHIPMENT.eta;
-    document.getElementById('iCarrier').textContent = SHIPMENT.carrier;
-    document.getElementById('iSvc').textContent     = SHIPMENT.service;
-    document.getElementById('iWt').textContent      = SHIPMENT.weight + ' · ' + SHIPMENT.dimensions;
-    document.getElementById('iShip').textContent    = SHIPMENT.shipDate;
-    document.getElementById('iLoc').textContent     = SHIPMENT.lastLocation;
-    document.getElementById('uTxt').textContent     = 'Last update: ' + SHIPMENT.lastUpdate + ' · ' + SHIPMENT.lastLocation;
-    const active = SHIPMENT.steps[SHIPMENT.currentStep];
-    const badge = document.getElementById('resBadge');
-    const lbl = active ? active.label : 'In Transit';
-    badge.className = 'sBadge ' + (lbl.toLowerCase().includes('customs') ? 'cu' : 'tr');
-    document.getElementById('resBadgeTxt').textContent = lbl;
-    setTimeout(() => {
-      const pct = SHIPMENT.routeProgressPct;
-      document.getElementById('rFill').style.width = pct + '%';
-      const plane = document.getElementById('rPlane');
-      plane.style.position = 'absolute';
-      plane.style.left = 'calc(' + pct + '% - 8px)';
-      plane.style.right = 'auto';
-    }, 300);
-    buildTimeline(SHIPMENT.steps);
-    const panel = document.getElementById('resPanel');
-    panel.style.display = 'block';
-    panel.style.animation = 'none';
-    requestAnimationFrame(() => { panel.style.animation = 'pgIn .45s ease both'; });
-    setTimeout(() => panel.scrollIntoView({ behavior:'smooth', block:'nearest' }), 120);
+   showToast('Shipment on Hold: Parcel temporarily stopped due to pending Government Royalties Certification and Inspection & Verification clearance. Sender is requested to contact courier support to resolve documentation requirements.', true);
   });
 }
 
