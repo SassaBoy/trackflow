@@ -414,8 +414,8 @@ footer{margin-top:auto;border-top:1px solid var(--bdr);background:var(--surf);pa
 ═══════════════════════════════════════════════════════ */
 
 const SHIPMENT = {
-  trackingNumber: "TF-INT-2026-44819",
-  orderNumber: "ORD-2026-NAM-0031",
+  trackingNumber: "TF-INT-2026-77231",
+  orderNumber: "ORD-2026-NAM-0047",
 
   weight: "1.4 kg",
   dimensions: "38 × 24 × 12 cm",
@@ -424,26 +424,27 @@ const SHIPMENT = {
   service: "DHL Worldwide Express",
 
   origin: "Windhoek, Namibia 🇳🇦",
-  destination: "Aventura, FL, USA 🇺🇸",
+  destination: "Leigh, Manchester, UK 🇬🇧",
 
   shipper: "Namcraft Artisans Co.",
 
-  receiver: "Mr. Rafi Franco",
+  receiver: "Mr. Aristoteles Rafid Junior Sebastiao",
   deliveryAddress: `
-  19275 Biscayne Blvd, Suite 208
-  Aventura, FL 33180
-  United States of America
+  Flat 8, 14–18 Publication House
+  Bradshawgate, Leigh
+  WN7 4LX
+  Greater Manchester, United Kingdom
   `,
 
   transitTime: "2–4 business days",
-  eta: "Between 12–14 March 2026",
+  eta: "Between 19–22 March 2026",
 
-  orderDate: "9 March 2026",
+  orderDate: "18 March 2026",
 
   currentStep: 5,
 
- lastUpdate: "9 Mar 2026 · 06:00 PM UTC",
-lastLocation: "Johannesburg International Cargo Hub, South Africa",
+ lastUpdate: "18 Mar 2026 · 07:00 AM UTC",
+  lastLocation: "Windhoek Customs Authority, Namibia",
 
   routeProgressPct: 28,
 
@@ -453,7 +454,7 @@ lastLocation: "Johannesburg International Cargo Hub, South Africa",
       label: "Shipment Collected",
       loc: "Windhoek, Namibia",
       note: "Courier collected shipment from sender",
-      time: "9 Mar 2026 · 02:40 AM UTC",
+      time: "18 Mar 2026 · 02:40 AM UTC",
       state: "done"
     },
 
@@ -461,7 +462,7 @@ lastLocation: "Johannesburg International Cargo Hub, South Africa",
       label: "Arrived at Windhoek Processing Facility",
       loc: "Windhoek Logistics Facility",
       note: "Shipment processed and prepared for export",
-      time: "9 Mar 2026 · 05:30 AM UTC",
+      time: "18 Mar 2026 · 05:30 AM UTC",
       state: "done"
     },
 
@@ -469,7 +470,7 @@ lastLocation: "Johannesburg International Cargo Hub, South Africa",
       label: "Export Documentation & Security Check",
       loc: "Windhoek Export Processing",
       note: "International shipping documentation verified",
-      time: "9 Mar 2026 · 07:10 AM UTC",
+      time: "18 Mar 2026 · 07:10 AM UTC",
       state: "done"
     },
 
@@ -477,74 +478,81 @@ lastLocation: "Johannesburg International Cargo Hub, South Africa",
       label: "Departed Windhoek — International Dispatch",
       loc: "Hosea Kutako International Airport (WDH), Namibia",
       note: "Shipment departed Namibia via regional cargo flight",
-      time: "9 Mar 2026 · 09:00 AM UTC",
+      time: "18 Mar 2026 · 09:00 AM UTC",
       state: "done"
+    },
+
+    {
+      label: "Customs Inspection & Export Clearance",
+      loc: "Windhoek Customs Authority, Namibia",
+      note: "Shipment held at Windhoek customs for inspection and export documentation verification",
+      time: "18 Mar 2026 · 07:00 AM UTC",
+      state: "active"
     },
 
     {
       label: "In Transit — Regional Hub",
       loc: "Johannesburg Air Cargo Hub, South Africa",
       note: "Shipment in transit to international routing hub",
-      time: "9 Mar 2026 · 11:05 AM UTC",
-state: "done"
-},
+      time: "20 Mar 2026 · 11:05 AM UTC",
+      state: "pending"
+    },
 
 {
-  label: "Export Clearance & International Departure",
-      loc: "Johannesburg International Cargo Hub",
-      note: "Preparing for long-haul international flight",
-time: "9 Mar 2026 · 06:00 PM UTC",
-state: "active"
-},
-
-{
-  label: "Transit Hub — Frankfurt",
+      label: "Transit Hub — Frankfurt",
       loc: "Frankfurt International Cargo Hub, Germany",
-      note: "Transit stop for North American routing",
-      time: "10 Mar 2026 · 05:30 AM UTC",
+      note: "Transit stop for UK routing",
+      time: "21 Mar 2026 · 05:30 AM UTC",
       state: "pending"
     },
 
     {
-      label: "Transatlantic Flight",
-      loc: "Frankfurt → Cincinnati International Hub",
-      note: "International cargo flight to North America",
-      time: "10 Mar 2026 · 08:00 AM UTC",
+      label: "Flight to United Kingdom",
+      loc: "Frankfurt → London Heathrow International Hub",
+      note: "International cargo flight to the UK",
+      time: "21 Mar 2026 · 10:00 AM UTC",
       state: "pending"
     },
 
     {
-      label: "US Customs Processing",
-      loc: "Cincinnati International Cargo Hub, USA",
+      label: "UK Border Force Customs Processing",
+      loc: "London Heathrow Cargo Terminal, UK",
       note: "Import inspection and customs clearance",
-      time: "11 Mar 2026 · 03:00 AM UTC",
+      time: "22 Mar 2026 · 04:00 AM UTC",
       state: "pending"
     },
 
     {
-      label: "Dispatched to Florida Distribution Center",
-      loc: "Cincinnati → Miami Logistics Network",
-      note: "Transferred to Florida regional delivery network",
-      time: "11 Mar 2026 · 08:30 PM UTC",
+      label: "Dispatched to Northern England Distribution Centre",
+      loc: "London Heathrow → Manchester Logistics Network",
+      note: "Transferred to Greater Manchester regional delivery network",
+      time: "22 Mar 2026 · 02:00 PM UTC",
       state: "pending"
     },
 
     {
       label: "Arrived at Local Delivery Facility",
-      loc: "Miami Regional Distribution Facility, Florida",
+      loc: "Manchester Regional Distribution Facility, UK",
       note: "Shipment prepared for final delivery route",
-      time: "12 Mar 2026 · 10:00 AM UTC",
+      time: "22 Mar 2026 · 08:00 PM UTC",
       state: "pending"
     },
 
     {
       label: "Out for Delivery",
-      loc: "Aventura, FL Delivery Route",
+      loc: "Leigh, Greater Manchester Delivery Route",
       note: "Courier assigned and out for delivery",
-      time: "12–13 Mar 2026",
+      time: "22–23 Mar 2026",
       state: "pending"
     },
 
+    {
+      label: "Delivered",
+      loc: "Leigh, Greater Manchester, UK",
+      note: "Delivered to receiver address",
+      time: "19–22 March 2026",
+      state: "pending"
+    },
     {
       label: "Delivered",
       loc: "Aventura, FL, USA",
@@ -624,7 +632,7 @@ const MSGS_KEY = "trackflow_msgs_v2";
       International tracking enabled
     </div>
     <h1 class="hH1">Where is<br><em>your package?</em></h1>
-    <p class="hP">Enter your tracking number for live updates — from pickup in Namibia to your doorstep in the US.</p>
+    <p class="hP">Enter your tracking number for real-time updates across 500+ carriers and 220+ countries worldwide.</p>
   </div>
 
   <div style="padding:0 2.5rem;max-width:620px;margin:0 auto;width:100%">
@@ -664,12 +672,12 @@ const MSGS_KEY = "trackflow_msgs_v2";
               <div class="rFill" id="rFill"></div>
               <div class="rPlane" id="rPlane" style="position:absolute;right:-8px;top:-8px;font-size:15px">✈️</div>
             </div>
-            <div class="rDist">~14,200 km · 10–16 day international transit</div>
+            <div class="rDist">~9,800 km · 8–12 day international transit</div>
           </div>
           <div class="rEnd">
-            <div class="rFlag">🇺🇸</div>
-            <div class="rCity" style="text-align:right">Destination</div>
-            <div class="rName">Florida, USA</div>
+           <div class="rFlag">🇬🇧</div>
+              <div class="rCity" style="text-align:right">Destination</div>
+              <div class="rName">Manchester, UK</div>
           </div>
         </div>
 
@@ -737,18 +745,18 @@ const MSGS_KEY = "trackflow_msgs_v2";
         <div class="ordImg">🎨</div>
         <div class="ordInfo">
      <div class="ordName">Sealed Parcel — "Private Cargo"</div>
-          <div class="ordMeta">Order #ORD-2026-NAM-0031 · Placed Mar 9, 2026 · DHL Express International</div>
+          <div class="ordMeta">Order #ORD-2026-NAM-0031 · Placed Mar 18, 2026 · DHL Express International</div>
         </div>
         <div class="ordR">
-          <div class="ordPrice">$218.00</div>
+          <div class="ordPrice">$150.00</div>
           <span class="tag amb"><span class="tagDot"></span>In Transit</span>
         </div>
       </div>
       <div style="background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
         <div style="font-size:1.3rem">📍</div>
         <div style="flex:1;min-width:0">
-          <div style="font-size:.83rem;font-weight:600;color:var(--t1);margin-bottom:2px">Currently at OR Tambo Airport, Johannesburg — Export clearance processing</div>
-          <div style="font-size:.75rem;color:var(--t3);font-weight:300">Last update: Mar 9, 2025 · 02:14 AM UTC · Est. delivery: Mar 14–16</div>
+          <div style="font-size:.83rem;font-weight:600;color:var(--t1);margin-bottom:2px">Currently at Windhoek Customs Authority — Held pending export documentation clearance</div>
+          <div style="font-size:.75rem;color:var(--t3);font-weight:300">Last update: Mar 18, 2026 · 07:00 AM UTC · Est. delivery: Mar 19–22</div>
         </div>
         <button class="btnS" onclick="go('home')">Track ↗</button>
       </div>
@@ -1279,7 +1287,7 @@ function nodeIcon(state) {
   if (state === 'done')
     return `<svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.8"><polyline points="20 6 9 17 4 12"/></svg>`;
   if (state === 'active')
-    return `<svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`;
+    return ``;
   if (state === 'cust')
     return `<svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>`;
   return '';
@@ -1342,7 +1350,21 @@ function doTrack() {
 }
   document.getElementById('resPanel').style.display = 'none';
   runLoader(() => {
-   showToast('Shipment on Hold: Parcel temporarily stopped due to pending Government Royalties Certification and Inspection & Verification clearance. Sender is requested to contact courier support to resolve documentation requirements.', true);
+    const S = SHIPMENT;
+    document.getElementById('resId').textContent = S.trackingNumber;
+    document.getElementById('uTxt').textContent = 'Last update: ' + S.lastUpdate + ' · ' + S.lastLocation;
+    document.getElementById('iEta').textContent = S.eta;
+    document.getElementById('iCarrier').textContent = S.carrier;
+    document.getElementById('iSvc').textContent = S.service;
+    document.getElementById('iWt').textContent = S.weight + ' · ' + S.dimensions;
+    document.getElementById('iShip').textContent = S.orderDate;
+    document.getElementById('iLoc').textContent = S.lastLocation;
+    buildTimeline(S.steps);
+    setTimeout(() => {
+      const fill = document.getElementById('rFill');
+      fill.style.width = S.routeProgressPct + '%';
+    }, 300);
+    document.getElementById('resPanel').style.display = 'block';
   });
 }
 
