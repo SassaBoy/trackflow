@@ -533,9 +533,9 @@ const SHIPMENTS = {
     transitTime:    "2–4 business days",
     eta:            "Between 12–14 March 2026",
     orderDate:      "9 March 2026",
-    lastUpdate:     "11 Mar 2026 · 03:00 AM UTC",
-    lastLocation:   "Cincinnati International Cargo Hub, USA",
-    routeProgressPct: 72,
+    lastUpdate:     "10 Mar 2026 · 05:30 AM UTC",
+    lastLocation:   "Frankfurt International Cargo Hub, Germany",
+    routeProgressPct: 55,
     steps: [
       {
         label: "Shipment Collected",
@@ -584,21 +584,21 @@ const SHIPMENTS = {
         loc:   "Frankfurt International Cargo Hub, Germany",
         note:  "Processed through European transit hub",
         time:  "10 Mar 2026 · 05:30 AM UTC",
-        state: "done"
+        state: "active"
       },
       {
         label: "Transatlantic Flight Departed",
         loc:   "Frankfurt → Cincinnati International Hub",
         note:  "International cargo flight to North America",
         time:  "10 Mar 2026 · 09:00 AM UTC",
-        state: "done"
+        state: "pending"
       },
       {
         label: "Arrived — Cincinnati International Hub",
         loc:   "Cincinnati/Northern Kentucky International Cargo Hub, USA",
         note:  "Shipment received at US gateway hub, awaiting customs processing",
         time:  "11 Mar 2026 · 03:00 AM UTC",
-        state: "active"
+        state: "pending"
       },
       {
         label: "US Customs Processing",
@@ -1456,8 +1456,8 @@ function renderOrders() {
       name: "Sealed Parcel — \"Private Cargo\"",
       meta: "Order #ORD-2026-NAM-0031 · Placed Mar 9, 2026 · DHL Express International",
       price: "$218.00",
-      statusLine: "Currently at Cincinnati International Cargo Hub — Pending US Customs processing",
-      statusMeta: "Last update: Mar 11, 2026 · 03:00 AM UTC · Est. delivery: Mar 12–14 · Dest: Aventura, FL, USA 🇺🇸"
+      statusLine: "Currently at Frankfurt International Cargo Hub — Awaiting transatlantic flight to North America",
+      statusMeta: "Last update: Mar 10, 2026 · 05:30 AM UTC · Est. delivery: Mar 12–14 · Dest: Aventura, FL, USA 🇺🇸"
     }
   };
 
