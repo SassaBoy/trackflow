@@ -316,34 +316,26 @@ footer{margin-top:auto;border-top:1px solid var(--bdr);background:var(--surf);pa
 .ftCopy{font-size:.71rem;color:var(--t3)}
 
 /* ═══ RESPONSIVE ═══ */
-
-/* tablet: 641–900 */
 @media(max-width:900px){
   .chanGrid{grid-template-columns:1fr 1fr}
   .stepsRow{grid-template-columns:1fr 1fr}
 }
-
-/* mobile: ≤640 */
 @media(max-width:640px){
   nav{padding:0 1.2rem}
   .nLinks{display:none}
   .nStat{display:none}
   .nRight .btnNav{display:none}
   .nHamburger{display:flex}
-
   .phdr{padding:28px 1.2rem 22px}
   .wrap{padding:22px 1.2rem}
   .legalWrap{padding:22px 1.2rem}
-
   .hero{padding:36px 1.2rem 0}
   .hP{margin-bottom:28px;font-size:.9rem}
   .hH1{font-size:2.4rem}
-
   .tCard{padding:20px 16px;margin-bottom:18px}
   .tRow{flex-direction:column;gap:10px}
   .btnTr{width:100%;justify-content:center;height:48px}
   .tIn{height:48px}
-
   #resPanel{margin-bottom:28px}
   .rBanner{padding:14px 15px;gap:8px}
   .rMid{padding:0 8px}
@@ -362,41 +354,32 @@ footer{margin-top:auto;border-top:1px solid var(--bdr);background:var(--surf);pa
   .iCell{border-right:none!important;border-bottom:1px solid var(--bdr)!important}
   .iCell:last-child{border-bottom:none!important}
   .iCell{padding:13px 15px}
-
   .stepsRow{grid-template-columns:1fr;gap:10px;margin-bottom:24px}
   .chanGrid{grid-template-columns:1fr;gap:10px}
   .polGrid{grid-template-columns:1fr;gap:10px}
   .fGrid{grid-template-columns:1fr;gap:12px}
   .fGrp.full{grid-column:1}
   .hoursGrid{grid-template-columns:1fr;gap:10px}
-
   .fCard{padding:20px 16px}
   .faqCTA{flex-direction:column;gap:14px;padding:20px}
   .faqCTA .btnP{width:100%;justify-content:center}
   .legalContact{flex-direction:column;gap:14px;padding:20px}
   .legalContact .btnP{width:100%;justify-content:center}
-
   .ordCard{gap:12px;padding:16px}
   .ordImg{width:42px;height:42px;font-size:17px}
   .ordName{font-size:.83rem}
   .ordMeta{font-size:.7rem}
-
   .trBar{gap:14px;padding:0 1.2rem 36px}
   .trItem{font-size:.69rem}
-
   footer{padding:20px 1.2rem}
   .ftI{flex-direction:column;gap:10px;text-align:center}
   .ftLinks{justify-content:center}
-
   .ldSteps{min-width:auto;width:calc(100vw - 48px);max-width:300px}
   .ldL1{font-size:1.1rem}
-
   .hBadge{font-size:.62rem;padding:4px 11px}
   .inboxTop{flex-direction:column;gap:3px}
   .inboxTime{font-size:.68rem}
 }
-
-/* very small: ≤380 */
 @media(max-width:380px){
   .hH1{font-size:2rem}
   .ptitle{font-size:1.65rem}
@@ -410,157 +393,251 @@ footer{margin-top:auto;border-top:1px solid var(--bdr);background:var(--surf);pa
 
 <script>
 /* ═══════════════════════════════════════════════════════
-   !! UPDATE ZONE — edit SHIPMENT to update the package !!
+   SHIPMENTS — keyed by tracking number (uppercase)
 ═══════════════════════════════════════════════════════ */
+const SHIPMENTS = {
 
-const SHIPMENT = {
-  trackingNumber: "TF-INT-2026-77231",
-  orderNumber: "ORD-2026-NAM-0047",
+  /* ── UK shipment ── */
+  "TF-INT-2026-77231": {
+    trackingNumber: "TF-INT-2026-77231",
+    orderNumber:    "ORD-2026-NAM-0047",
+    weight:         "1.4 kg",
+    dimensions:     "38 × 24 × 12 cm",
+    carrier:        "DHL Express International",
+    service:        "DHL Worldwide Express",
+    origin:         "Windhoek, Namibia 🇳🇦",
+    destination:    "Leigh, Manchester, UK 🇬🇧",
+    destFlag:       "🇬🇧",
+    destLabel:      "Manchester, UK",
+    routeDist:      "~9,800 km · 8–12 day international transit",
+    shipper:        "Namcraft Artisans Co.",
+    receiver:       "Mr. Aristoteles Rafid Junior Sebastiao",
+    deliveryAddress:`Flat 8, 14–18 Publication House\n  Bradshawgate, Leigh\n  WN7 4LX\n  Greater Manchester, United Kingdom`,
+    transitTime:    "2–4 business days",
+    eta:            "Between 21–23 March 2026",
+    orderDate:      "18 March 2026",
+    lastUpdate:     "20 Mar 2026 · 05:30 AM UTC",
+    lastLocation:   "Frankfurt International Cargo Hub, Germany",
+    routeProgressPct: 52,
+    steps: [
+      {
+        label: "Shipment Collected",
+        loc:   "Windhoek, Namibia",
+        note:  "Courier collected shipment from sender",
+        time:  "18 Mar 2026 · 02:40 AM UTC",
+        state: "done"
+      },
+      {
+        label: "Arrived at Windhoek Processing Facility",
+        loc:   "Windhoek Logistics Facility",
+        note:  "Shipment processed and prepared for export",
+        time:  "18 Mar 2026 · 05:30 AM UTC",
+        state: "done"
+      },
+      {
+        label: "Export Documentation & Security Check",
+        loc:   "Windhoek Export Processing",
+        note:  "International shipping documentation verified",
+        time:  "18 Mar 2026 · 07:10 AM UTC",
+        state: "done"
+      },
+      {
+        label: "Departed Windhoek — International Dispatch",
+        loc:   "Hosea Kutako International Airport (WDH), Namibia",
+        note:  "Shipment departed Namibia via regional cargo flight",
+        time:  "18 Mar 2026 · 09:00 AM UTC",
+        state: "done"
+      },
+      {
+        label: "In Transit — Regional Hub",
+        loc:   "Johannesburg Air Cargo Hub, South Africa",
+        note:  "Shipment processed through regional routing hub",
+        time:  "18 Mar 2026 · 03:00 PM UTC",
+        state: "done"
+      },
+      {
+        label: "Export Clearance & Long-Haul Departure",
+        loc:   "O.R. Tambo International Cargo Hub, Johannesburg",
+        note:  "Cleared for long-haul international flight to Europe",
+        time:  "19 Mar 2026 · 01:00 AM UTC",
+        state: "done"
+      },
+      {
+        label: "Arrived — Frankfurt Transit Hub",
+        loc:   "Frankfurt International Cargo Hub, Germany",
+        note:  "Awaiting onward flight to London Heathrow",
+        time:  "20 Mar 2026 · 05:30 AM UTC",
+        state: "active"
+      },
+      {
+        label: "Flight to United Kingdom",
+        loc:   "Frankfurt → London Heathrow Cargo Terminal",
+        note:  "International cargo flight to the UK",
+        time:  "20 Mar 2026 · 04:00 PM UTC",
+        state: "pending"
+      },
+      {
+        label: "UK Border Force Customs Processing",
+        loc:   "London Heathrow Cargo Terminal, UK",
+        note:  "Import inspection and customs clearance",
+        time:  "21 Mar 2026 · 06:00 AM UTC",
+        state: "pending"
+      },
+      {
+        label: "Dispatched to Northern England Distribution Centre",
+        loc:   "London Heathrow → Manchester Logistics Network",
+        note:  "Transferred to Greater Manchester regional delivery network",
+        time:  "21 Mar 2026 · 02:00 PM UTC",
+        state: "pending"
+      },
+      {
+        label: "Arrived at Local Delivery Facility",
+        loc:   "Manchester Regional Distribution Facility, UK",
+        note:  "Shipment prepared for final delivery route",
+        time:  "22 Mar 2026 · 08:00 AM UTC",
+        state: "pending"
+      },
+      {
+        label: "Out for Delivery",
+        loc:   "Leigh, Greater Manchester Delivery Route",
+        note:  "Courier assigned and out for delivery",
+        time:  "22–23 Mar 2026",
+        state: "pending"
+      },
+      {
+        label: "Delivered",
+        loc:   "Leigh, Greater Manchester, UK",
+        note:  "Delivered to receiver address",
+        time:  "21–23 March 2026",
+        state: "pending"
+      }
+    ]
+  },
 
-  weight: "1.4 kg",
-  dimensions: "38 × 24 × 12 cm",
+  /* ── USA shipment ── */
+  "TF-INT-2026-44819": {
+    trackingNumber: "TF-INT-2026-44819",
+    orderNumber:    "ORD-2026-NAM-0031",
+    weight:         "1.4 kg",
+    dimensions:     "38 × 24 × 12 cm",
+    carrier:        "DHL Express International",
+    service:        "DHL Worldwide Express",
+    origin:         "Windhoek, Namibia 🇳🇦",
+    destination:    "Aventura, FL, USA 🇺🇸",
+    destFlag:       "🇺🇸",
+    destLabel:      "Florida, USA",
+    routeDist:      "~14,200 km · 10–16 day international transit",
+    shipper:        "Namcraft Artisans Co.",
+    receiver:       "Mr. Rafi Franco",
+    deliveryAddress:`19275 Biscayne Blvd, Suite 208\n  Aventura, FL 33180\n  United States of America`,
+    transitTime:    "2–4 business days",
+    eta:            "Between 12–14 March 2026",
+    orderDate:      "9 March 2026",
+    lastUpdate:     "11 Mar 2026 · 03:00 AM UTC",
+    lastLocation:   "Cincinnati International Cargo Hub, USA",
+    routeProgressPct: 72,
+    steps: [
+      {
+        label: "Shipment Collected",
+        loc:   "Windhoek, Namibia",
+        note:  "Courier collected shipment from sender",
+        time:  "9 Mar 2026 · 02:40 AM UTC",
+        state: "done"
+      },
+      {
+        label: "Arrived at Windhoek Processing Facility",
+        loc:   "Windhoek Logistics Facility",
+        note:  "Shipment processed and prepared for export",
+        time:  "9 Mar 2026 · 05:30 AM UTC",
+        state: "done"
+      },
+      {
+        label: "Export Documentation & Security Check",
+        loc:   "Windhoek Export Processing",
+        note:  "International shipping documentation verified",
+        time:  "9 Mar 2026 · 07:10 AM UTC",
+        state: "done"
+      },
+      {
+        label: "Departed Windhoek — International Dispatch",
+        loc:   "Hosea Kutako International Airport (WDH), Namibia",
+        note:  "Shipment departed Namibia via regional cargo flight",
+        time:  "9 Mar 2026 · 09:00 AM UTC",
+        state: "done"
+      },
+      {
+        label: "In Transit — Regional Hub",
+        loc:   "Johannesburg Air Cargo Hub, South Africa",
+        note:  "Shipment processed through regional routing hub",
+        time:  "9 Mar 2026 · 11:05 AM UTC",
+        state: "done"
+      },
+      {
+        label: "Export Clearance & Long-Haul Departure",
+        loc:   "O.R. Tambo International Cargo Hub, Johannesburg",
+        note:  "Cleared for long-haul international flight",
+        time:  "9 Mar 2026 · 06:00 PM UTC",
+        state: "done"
+      },
+      {
+        label: "Transit Hub — Frankfurt",
+        loc:   "Frankfurt International Cargo Hub, Germany",
+        note:  "Processed through European transit hub",
+        time:  "10 Mar 2026 · 05:30 AM UTC",
+        state: "done"
+      },
+      {
+        label: "Transatlantic Flight Departed",
+        loc:   "Frankfurt → Cincinnati International Hub",
+        note:  "International cargo flight to North America",
+        time:  "10 Mar 2026 · 09:00 AM UTC",
+        state: "done"
+      },
+      {
+        label: "Arrived — Cincinnati International Hub",
+        loc:   "Cincinnati/Northern Kentucky International Cargo Hub, USA",
+        note:  "Shipment received at US gateway hub, awaiting customs processing",
+        time:  "11 Mar 2026 · 03:00 AM UTC",
+        state: "active"
+      },
+      {
+        label: "US Customs Processing",
+        loc:   "Cincinnati International Cargo Hub, USA",
+        note:  "Import inspection and CBP customs clearance",
+        time:  "11 Mar 2026 · 08:00 AM UTC",
+        state: "pending"
+      },
+      {
+        label: "Dispatched to Florida Distribution Centre",
+        loc:   "Cincinnati → Miami Logistics Network",
+        note:  "Transferred to Florida regional delivery network",
+        time:  "11 Mar 2026 · 08:30 PM UTC",
+        state: "pending"
+      },
+      {
+        label: "Arrived at Local Delivery Facility",
+        loc:   "Miami Regional Distribution Facility, Florida",
+        note:  "Shipment prepared for final delivery route",
+        time:  "12 Mar 2026 · 10:00 AM UTC",
+        state: "pending"
+      },
+      {
+        label: "Out for Delivery",
+        loc:   "Aventura, FL Delivery Route",
+        note:  "Courier assigned and out for delivery",
+        time:  "12–13 Mar 2026",
+        state: "pending"
+      },
+      {
+        label: "Delivered",
+        loc:   "Aventura, FL, USA",
+        note:  "Delivered to receiver address",
+        time:  "12–14 March 2026",
+        state: "pending"
+      }
+    ]
+  }
 
-  carrier: "DHL Express International",
-  service: "DHL Worldwide Express",
-
-  origin: "Windhoek, Namibia 🇳🇦",
-  destination: "Leigh, Manchester, UK 🇬🇧",
-
-  shipper: "Namcraft Artisans Co.",
-
-  receiver: "Mr. Aristoteles Rafid Junior Sebastiao",
-  deliveryAddress: `
-  Flat 8, 14–18 Publication House
-  Bradshawgate, Leigh
-  WN7 4LX
-  Greater Manchester, United Kingdom
-  `,
-
-  transitTime: "2–4 business days",
-  eta: "Between 19–22 March 2026",
-
-  orderDate: "18 March 2026",
-
-  currentStep: 5,
-
- lastUpdate: "18 Mar 2026 · 03:00 PM UTC",
-  lastLocation: "Johannesburg Air Cargo Hub, South Africa",
-
-  routeProgressPct: 28,
-
-  steps: [
-
-    {
-      label: "Shipment Collected",
-      loc: "Windhoek, Namibia",
-      note: "Courier collected shipment from sender",
-      time: "18 Mar 2026 · 02:40 AM UTC",
-      state: "done"
-    },
-
-    {
-      label: "Arrived at Windhoek Processing Facility",
-      loc: "Windhoek Logistics Facility",
-      note: "Shipment processed and prepared for export",
-      time: "18 Mar 2026 · 05:30 AM UTC",
-      state: "done"
-    },
-
-    {
-      label: "Export Documentation & Security Check",
-      loc: "Windhoek Export Processing",
-      note: "International shipping documentation verified",
-      time: "18 Mar 2026 · 07:10 AM UTC",
-      state: "done"
-    },
-
-    {
-      label: "Departed Windhoek — International Dispatch",
-      loc: "Hosea Kutako International Airport (WDH), Namibia",
-      note: "Shipment departed Namibia via regional cargo flight",
-      time: "18 Mar 2026 · 09:00 AM UTC",
-      state: "done"
-    },
-
-    {
-      label: "Customs Inspection & Export Clearance",
-      loc: "Windhoek Customs Authority, Namibia",
-      note: "Shipment held at Windhoek customs for inspection and export documentation verification",
-      time: "18 Mar 2026 · 07:00 AM UTC",
-      state: "done"
-    },
-
-    {
-      label: "In Transit — Regional Hub",
-      loc: "Johannesburg Air Cargo Hub, South Africa",
-      note: "Shipment in transit to international routing hub",
-      time: "18 Mar 2026 · 03:00 PM UTC",
-      state: "active"
-    },
-
-{
-      label: "Transit Hub — Frankfurt",
-      loc: "Frankfurt International Cargo Hub, Germany",
-      note: "Transit stop for UK routing",
-      time: "21 Mar 2026 · 05:30 AM UTC",
-      state: "pending"
-    },
-
-    {
-      label: "Flight to United Kingdom",
-      loc: "Frankfurt → London Heathrow International Hub",
-      note: "International cargo flight to the UK",
-      time: "21 Mar 2026 · 10:00 AM UTC",
-      state: "pending"
-    },
-
-    {
-      label: "UK Border Force Customs Processing",
-      loc: "London Heathrow Cargo Terminal, UK",
-      note: "Import inspection and customs clearance",
-      time: "22 Mar 2026 · 04:00 AM UTC",
-      state: "pending"
-    },
-
-    {
-      label: "Dispatched to Northern England Distribution Centre",
-      loc: "London Heathrow → Manchester Logistics Network",
-      note: "Transferred to Greater Manchester regional delivery network",
-      time: "22 Mar 2026 · 02:00 PM UTC",
-      state: "pending"
-    },
-
-    {
-      label: "Arrived at Local Delivery Facility",
-      loc: "Manchester Regional Distribution Facility, UK",
-      note: "Shipment prepared for final delivery route",
-      time: "22 Mar 2026 · 08:00 PM UTC",
-      state: "pending"
-    },
-
-    {
-      label: "Out for Delivery",
-      loc: "Leigh, Greater Manchester Delivery Route",
-      note: "Courier assigned and out for delivery",
-      time: "22–23 Mar 2026",
-      state: "pending"
-    },
-
-    {
-      label: "Delivered",
-      loc: "Leigh, Greater Manchester, UK",
-      note: "Delivered to receiver address",
-      time: "19–22 March 2026",
-      state: "pending"
-    },
-    {
-      label: "Delivered",
-      loc: "Aventura, FL, USA",
-      note: "Delivered to receiver address",
-      time: "12–14 March 2026",
-      state: "pending"
-    }
-  ]
 };
 
 const MSGS_KEY = "trackflow_msgs_v2";
@@ -602,7 +679,6 @@ const MSGS_KEY = "trackflow_msgs_v2";
     <div class="nStat"><div class="nDot"></div>All systems live</div>
     <button class="btnNav" onclick="go('support')">Contact Support</button>
   </div>
-  <!-- Hamburger -->
   <button class="nHamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Toggle menu" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
@@ -610,10 +686,10 @@ const MSGS_KEY = "trackflow_msgs_v2";
 
 <!-- MOBILE NAV DRAWER -->
 <div class="mobileNav" id="mobileNav">
-  <button class="mNavItem" id="mn-home" onclick="go('home');closeMobileNav()">📦 Track Order</button>
-  <button class="mNavItem" id="mn-orders" onclick="go('orders');closeMobileNav()">🗂 My Orders</button>
+  <button class="mNavItem" id="mn-home"    onclick="go('home');closeMobileNav()">📦 Track Order</button>
+  <button class="mNavItem" id="mn-orders"  onclick="go('orders');closeMobileNav()">🗂 My Orders</button>
   <button class="mNavItem" id="mn-returns" onclick="go('returns');closeMobileNav()">↩️ Returns</button>
-  <button class="mNavItem" id="mn-faq" onclick="go('faq');closeMobileNav()">❓ FAQ</button>
+  <button class="mNavItem" id="mn-faq"     onclick="go('faq');closeMobileNav()">❓ FAQ</button>
   <div class="mNavDivider"></div>
   <button class="mNavItem" id="mn-support" onclick="go('support');closeMobileNav()">💬 Contact Support</button>
   <button class="mNavItem" onclick="go('privacy');closeMobileNav()">🔒 Privacy Policy</button>
@@ -632,7 +708,7 @@ const MSGS_KEY = "trackflow_msgs_v2";
       International tracking enabled
     </div>
     <h1 class="hH1">Where is<br><em>your package?</em></h1>
-    <p class="hP">Enter your tracking number for real-time updates across 500+ carriers and 220+ countries worldwide.</p>
+    <p class="hP">Enter your tracking number for live updates — from pickup in Namibia to your doorstep.</p>
   </div>
 
   <div style="padding:0 2.5rem;max-width:620px;margin:0 auto;width:100%">
@@ -657,10 +733,9 @@ const MSGS_KEY = "trackflow_msgs_v2";
       </div>
     </div>
 
-    <!-- RESULT -->
+    <!-- RESULT PANEL — populated by JS -->
     <div id="resPanel">
       <div class="resCard">
-        <!-- Route banner -->
         <div class="rBanner">
           <div>
             <div class="rFlag">🇳🇦</div>
@@ -672,16 +747,14 @@ const MSGS_KEY = "trackflow_msgs_v2";
               <div class="rFill" id="rFill"></div>
               <div class="rPlane" id="rPlane" style="position:absolute;right:-8px;top:-8px;font-size:15px">✈️</div>
             </div>
-            <div class="rDist">~9,800 km · 8–12 day international transit</div>
+            <div class="rDist" id="rDist">—</div>
           </div>
           <div class="rEnd">
-           <div class="rFlag">🇬🇧</div>
-              <div class="rCity" style="text-align:right">Destination</div>
-              <div class="rName">Manchester, UK</div>
+            <div class="rFlag" id="rDestFlag">🏳️</div>
+            <div class="rCity" style="text-align:right">Destination</div>
+            <div class="rName" id="rDestName">—</div>
           </div>
         </div>
-
-        <!-- Top -->
         <div class="resTop">
           <div>
             <div class="resLbl">Tracking Number</div>
@@ -692,22 +765,16 @@ const MSGS_KEY = "trackflow_msgs_v2";
             <span id="resBadgeTxt">In Transit</span>
           </div>
         </div>
-
-        <!-- Update notice -->
         <div class="uNotice">
           <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
           <span id="uTxt">Last update: —</span>
         </div>
-
-        <!-- Timeline -->
         <div class="tlWrap">
           <div class="tl" id="tl">
             <div class="tlLine"></div>
             <div class="tlFill" id="tlFill"></div>
           </div>
         </div>
-
-        <!-- Info -->
         <div class="iGrid">
           <div class="iCell"><div class="iKey">Estimated Delivery</div><div class="iVal hi" id="iEta">—</div></div>
           <div class="iCell"><div class="iKey">Carrier</div><div class="iVal" id="iCarrier">—</div></div>
@@ -736,33 +803,13 @@ const MSGS_KEY = "trackflow_msgs_v2";
   <div class="phdr"><div class="phdr-i"><div class="pbrow">Account</div><h1 class="ptitle">My <em>Orders</em></h1><p class="pdesc">Track and manage all your active and past shipments.</p></div></div>
   <div class="wrap">
     <div class="ordTabs">
-      <button class="ordTab on" onclick="ordTab(this,'oAct')">Active (1)</button>
+      <button class="ordTab on" onclick="ordTab(this,'oAct')">Active (2)</button>
       <button class="ordTab" onclick="ordTab(this,'oPast')">Past Orders (0)</button>
       <button class="ordTab" onclick="ordTab(this,'oCan')">Cancelled (0)</button>
     </div>
-    <div id="oAct">
-      <div class="ordCard" onclick="go('home')">
-        <div class="ordImg">🎨</div>
-        <div class="ordInfo">
-     <div class="ordName">Sealed Parcel — "Private Cargo"</div>
-          <div class="ordMeta">Order #ORD-2026-NAM-0031 · Placed Mar 18, 2026 · DHL Express International</div>
-        </div>
-        <div class="ordR">
-          <div class="ordPrice">$150.00</div>
-          <span class="tag amb"><span class="tagDot"></span>In Transit</span>
-        </div>
-      </div>
-      <div style="background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-        <div style="font-size:1.3rem">📍</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:.83rem;font-weight:600;color:var(--t1);margin-bottom:2px">Currently at Windhoek Customs Authority — Held pending export documentation clearance</div>
-          <div style="font-size:.75rem;color:var(--t3);font-weight:300">Last update: Mar 18, 2026 · 07:00 AM UTC · Est. delivery: Mar 19–22</div>
-        </div>
-        <button class="btnS" onclick="go('home')">Track ↗</button>
-      </div>
-    </div>
+    <div id="oAct"></div>
     <div id="oPast" style="display:none"><div class="emSt"><div class="emIco">📦</div><div class="emTtl">No past orders yet</div><div class="emDesc">Completed orders will appear here once delivered.</div></div></div>
-    <div id="oCan" style="display:none"><div class="emSt"><div class="emIco">✓</div><div class="emTtl">No cancellations</div><div class="emDesc">You haven't cancelled any orders.</div></div></div>
+    <div id="oCan"  style="display:none"><div class="emSt"><div class="emIco">✓</div><div class="emTtl">No cancellations</div><div class="emDesc">You haven't cancelled any orders.</div></div></div>
   </div>
   <footer><div class="ftI"><div class="ftLogo">TrackFlow</div><ul class="ftLinks"><li><a href="#" onclick="go('privacy');return false">Privacy</a></li><li><a href="#" onclick="go('terms');return false">Terms</a></li></ul><div class="ftCopy">© 2025 TrackFlow Inc.</div></div></footer>
 </div>
@@ -780,7 +827,7 @@ const MSGS_KEY = "trackflow_msgs_v2";
       <div class="fCardT">Return Request Form</div>
       <div class="fCardS">All fields required. Return label arrives by email within 10 minutes of approval.</div>
       <div class="fGrid">
-        <div class="fGrp"><label class="fLbl">Order Number</label><input class="fIn" id="retOrd" type="text" placeholder="e.g. ORD-2025-NAM-0031"></div>
+        <div class="fGrp"><label class="fLbl">Order Number</label><input class="fIn" id="retOrd" type="text" placeholder="e.g. ORD-2026-NAM-0031"></div>
         <div class="fGrp"><label class="fLbl">Email Address</label><input class="fIn" id="retEmail" type="email" placeholder="you@example.com"></div>
         <div class="fGrp"><label class="fLbl">Item Being Returned</label><input class="fIn" id="retItem" type="text" placeholder="Product name or description"></div>
         <div class="fGrp"><label class="fLbl">Reason for Return</label>
@@ -848,14 +895,13 @@ const MSGS_KEY = "trackflow_msgs_v2";
         <span class="chanA off">Mon–Fri · 9am–6pm EST</span>
       </div>
     </div>
-
     <div class="fCard">
       <div class="fCardT">Send us a message</div>
       <div class="fCardS">We read every message and reply to your email within 2–4 hours. Messages are saved below for your reference.</div>
       <div class="fGrid">
         <div class="fGrp"><label class="fLbl">Your Name</label><input class="fIn" id="sName" type="text" placeholder="Jane Smith"></div>
         <div class="fGrp"><label class="fLbl">Email Address</label><input class="fIn" id="sEmail" type="email" placeholder="jane@example.com"></div>
-        <div class="fGrp"><label class="fLbl">Tracking / Order Number <span style="color:var(--t3);font-weight:300">(optional)</span></label><input class="fIn" id="sOrder" type="text" placeholder="e.g. TF-INT-2025-88302"></div>
+        <div class="fGrp"><label class="fLbl">Tracking / Order Number <span style="color:var(--t3);font-weight:300">(optional)</span></label><input class="fIn" id="sOrder" type="text" placeholder="e.g. TF-INT-2026-77231"></div>
         <div class="fGrp"><label class="fLbl">Subject</label>
           <select class="fSel" id="sSubj">
             <option value="">Select a topic…</option>
@@ -869,13 +915,11 @@ const MSGS_KEY = "trackflow_msgs_v2";
       </div>
       <button class="btnP" style="margin-top:8px" onclick="submitMsg()">Send Message <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
     </div>
-
     <div class="inboxHdr">
       <div class="secT" style="margin-bottom:0">Message Inbox <span id="inboxBadge"></span></div>
       <button class="btnS" onclick="clearInbox()">Clear All</button>
     </div>
     <div id="inboxList"></div>
-
     <div class="dv"></div>
     <div class="hoursGrid">
       <div class="hrsCard"><div class="hrsKey">Live Chat &amp; Email</div><div class="hrsVal">24 / 7 · 365 days a year</div><div class="hrsDesc">Always online. Average first response under 2 minutes via live chat.</div></div>
@@ -890,11 +934,7 @@ const MSGS_KEY = "trackflow_msgs_v2";
   <div class="phdr"><div class="phdr-i"><div class="pbrow">Legal</div><h1 class="ptitle">Privacy <em>Policy</em></h1><p class="pdesc">How TrackFlow collects, uses, and protects your personal information.</p></div></div>
   <div class="legalWrap">
     <div class="legalLastUpdated">Last updated: March 1, 2025</div>
-
-    <div class="legalHighlight">
-      Your privacy matters to us. TrackFlow collects only the information necessary to provide our international shipment tracking and customer support services. We do not sell your personal data to third parties.
-    </div>
-
+    <div class="legalHighlight">Your privacy matters to us. TrackFlow collects only the information necessary to provide our international shipment tracking and customer support services. We do not sell your personal data to third parties.</div>
     <div class="legalToc">
       <div class="secT">Contents</div>
       <ol>
@@ -911,7 +951,6 @@ const MSGS_KEY = "trackflow_msgs_v2";
         <li><a href="#">11. Contact Us</a></li>
       </ol>
     </div>
-
     <div class="legalSection">
       <h2>1. Information We Collect</h2>
       <p>We collect information you provide directly to us, information collected automatically when you use our services, and information received from third-party carriers and partners.</p>
@@ -936,7 +975,6 @@ const MSGS_KEY = "trackflow_msgs_v2";
         <li>Customs and border protection event data associated with your shipment</li>
       </ul>
     </div>
-
     <div class="legalSection">
       <h2>2. How We Use Your Information</h2>
       <p>We use the information we collect to operate, improve, and personalise our services:</p>
@@ -951,7 +989,6 @@ const MSGS_KEY = "trackflow_msgs_v2";
       </ul>
       <p>We do not use your personal information for automated decision-making that produces significant legal effects without human oversight.</p>
     </div>
-
     <div class="legalSection">
       <h2>3. Information Sharing</h2>
       <p>TrackFlow does not sell, rent, or trade your personal information to any third party for their marketing purposes. We share information only in the following limited circumstances:</p>
@@ -963,7 +1000,6 @@ const MSGS_KEY = "trackflow_msgs_v2";
         <li><strong>With your consent:</strong> We may share information for any other purpose with your explicit prior consent</li>
       </ul>
     </div>
-
     <div class="legalSection">
       <h2>4. Cookies &amp; Tracking Technologies</h2>
       <p>We use cookies and similar technologies to enable core platform functionality, remember your preferences, and analyse how our services are used.</p>
@@ -974,7 +1010,6 @@ const MSGS_KEY = "trackflow_msgs_v2";
       </ul>
       <p>You can manage cookie preferences through your browser settings. Disabling non-essential cookies will not affect your ability to use core tracking features.</p>
     </div>
-
     <div class="legalSection">
       <h2>5. Data Retention</h2>
       <p>We retain your personal information only for as long as necessary to fulfill the purposes described in this policy or as required by law:</p>
@@ -986,7 +1021,6 @@ const MSGS_KEY = "trackflow_msgs_v2";
       </ul>
       <p>You may request deletion of your personal data at any time (see Section 6).</p>
     </div>
-
     <div class="legalSection">
       <h2>6. Your Rights</h2>
       <p>Depending on your location, you may have the following rights regarding your personal information:</p>
@@ -1001,30 +1035,23 @@ const MSGS_KEY = "trackflow_msgs_v2";
       </ul>
       <p>To exercise any of these rights, contact our privacy team at privacy@trackflow.com. We will respond within 30 days. You also have the right to lodge a complaint with your local data protection authority.</p>
     </div>
-
     <div class="legalSection">
       <h2>7. International Data Transfers</h2>
       <p>TrackFlow operates globally and your shipment data may be processed in countries other than your own — including the United States, European Union member states, and South Africa — in order to track your parcel through international carrier networks. We ensure that all international transfers are protected by appropriate safeguards, including Standard Contractual Clauses approved by the European Commission and equivalent mechanisms where applicable.</p>
     </div>
-
     <div class="legalSection">
       <h2>8. Security</h2>
       <p>We implement industry-standard technical and organisational security measures to protect your personal information against unauthorised access, alteration, disclosure, or destruction. These include 256-bit TLS encryption for all data in transit, encrypted storage for data at rest, access controls and role-based permissions, regular security audits and penetration testing, and incident response procedures.</p>
       <p>No method of internet transmission is 100% secure. If you become aware of a security issue, please contact security@trackflow.com immediately.</p>
     </div>
-
     <div class="legalSection">
       <h2>9. Children's Privacy</h2>
       <p>Our services are not directed to children under the age of 16. We do not knowingly collect personal information from children under 16. If you believe we have inadvertently collected such information, please contact us and we will delete it promptly.</p>
     </div>
-
     <div class="legalSection">
       <h2>10. Changes to This Policy</h2>
       <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, or legal requirements. We will notify you of material changes by posting the updated policy on this page with a revised "Last Updated" date and, where appropriate, by sending an email notification. Your continued use of our services after changes take effect constitutes your acceptance of the updated policy.</p>
     </div>
-
-    
-
     <div class="legalContact">
       <div><div class="secT" style="margin-bottom:5px">Privacy questions?</div><p>Our Data Privacy Officer is available to assist with any concerns or data requests.</p></div>
       <button class="btnP" onclick="go('support')">Contact Us <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
@@ -1038,11 +1065,7 @@ const MSGS_KEY = "trackflow_msgs_v2";
   <div class="phdr"><div class="phdr-i"><div class="pbrow">Legal</div><h1 class="ptitle">Terms of <em>Use</em></h1><p class="pdesc">The terms and conditions governing your use of the TrackFlow platform.</p></div></div>
   <div class="legalWrap">
     <div class="legalLastUpdated">Last updated: March 1, 2025</div>
-
-    <div class="legalHighlight">
-      Please read these Terms carefully before using TrackFlow. By accessing or using our platform, you agree to be bound by these Terms. If you do not agree, please do not use our services.
-    </div>
-
+    <div class="legalHighlight">Please read these Terms carefully before using TrackFlow. By accessing or using our platform, you agree to be bound by these Terms. If you do not agree, please do not use our services.</div>
     <div class="legalToc">
       <div class="secT">Contents</div>
       <ol>
@@ -1061,13 +1084,11 @@ const MSGS_KEY = "trackflow_msgs_v2";
         <li><a href="#">13. Contact</a></li>
       </ol>
     </div>
-
     <div class="legalSection">
       <h2>1. Acceptance of Terms</h2>
       <p>These Terms of Use ("Terms") constitute a legally binding agreement between you ("User," "you," or "your") and TrackFlow Inc. ("TrackFlow," "we," "us," or "our") governing your access to and use of the TrackFlow website, mobile application, and related services (collectively, the "Platform").</p>
       <p>By accessing our Platform, clicking "I Agree," submitting a tracking query, or otherwise using our services, you acknowledge that you have read, understood, and agree to be bound by these Terms and our Privacy Policy, which is incorporated herein by reference.</p>
     </div>
-
     <div class="legalSection">
       <h2>2. Description of Services</h2>
       <p>TrackFlow provides international shipment tracking, order management, returns processing, and related customer support services. Our Platform aggregates tracking data from third-party carrier networks including but not limited to DHL Express, FedEx, UPS, and regional postal services worldwide.</p>
@@ -1081,7 +1102,6 @@ const MSGS_KEY = "trackflow_msgs_v2";
       </ul>
       <p>We reserve the right to modify, suspend, or discontinue any aspect of our services at any time with reasonable notice.</p>
     </div>
-
     <div class="legalSection">
       <h2>3. Eligibility &amp; Account Registration</h2>
       <p>You must be at least 18 years of age to use our Platform. By using TrackFlow, you represent and warrant that you meet this age requirement and have the legal capacity to enter into binding agreements in your jurisdiction.</p>
@@ -1094,7 +1114,6 @@ const MSGS_KEY = "trackflow_msgs_v2";
       </ul>
       <p>We reserve the right to suspend or terminate accounts that contain false information or that are used in violation of these Terms.</p>
     </div>
-
     <div class="legalSection">
       <h2>4. Acceptable Use</h2>
       <p>You agree to use our Platform only for lawful purposes and in accordance with these Terms. You must not:</p>
@@ -1109,13 +1128,11 @@ const MSGS_KEY = "trackflow_msgs_v2";
       </ul>
       <p>Violation of these provisions may result in immediate account termination and may be reported to relevant authorities.</p>
     </div>
-
     <div class="legalSection">
       <h2>5. Tracking Information &amp; Accuracy</h2>
       <p>Tracking information displayed on our Platform is sourced from third-party carrier systems. While we strive to present accurate and timely information, TrackFlow makes no representations or warranties regarding the completeness, accuracy, or timeliness of tracking data. Tracking events are only recorded at physical carrier scan points, and gaps of multiple days between events are normal for international shipments, particularly during long-haul flights and customs processing.</p>
       <p>Estimated delivery dates are projections based on historical carrier performance and standard transit times. They are not guaranteed delivery commitments. Actual delivery may vary due to customs delays, weather events, carrier operational conditions, or other factors outside TrackFlow's control.</p>
     </div>
-
     <div class="legalSection">
       <h2>6. Returns &amp; Refunds</h2>
       <p>Our returns and refund policies are detailed on the Returns page of the Platform. Key terms include:</p>
@@ -1127,31 +1144,26 @@ const MSGS_KEY = "trackflow_msgs_v2";
         <li>Prepaid return labels must be obtained through our Platform; independently arranged return shipping costs will not be reimbursed for international orders</li>
       </ul>
     </div>
-
     <div class="legalSection">
       <h2>7. Intellectual Property</h2>
       <p>The TrackFlow Platform, including its design, logos, user interface, software, text, graphics, and all other content (collectively, "TrackFlow Content"), is owned by or licensed to TrackFlow Inc. and is protected by copyright, trademark, and other intellectual property laws.</p>
       <p>You are granted a limited, non-exclusive, non-transferable, revocable licence to access and use the Platform for your personal, non-commercial purposes. This licence does not include the right to reproduce, distribute, modify, create derivative works, publicly display, or commercially exploit any TrackFlow Content without our express written consent.</p>
     </div>
-
     <div class="legalSection">
       <h2>8. Disclaimers</h2>
       <p>THE PLATFORM AND ALL SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, TRACKFLOW DISCLAIMS ALL WARRANTIES INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
       <p>TrackFlow does not warrant that the Platform will be uninterrupted, error-free, or free of viruses or other harmful components. We do not warrant the accuracy or completeness of any tracking information, delivery estimates, or customs data displayed on the Platform.</p>
     </div>
-
     <div class="legalSection">
       <h2>9. Limitation of Liability</h2>
       <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, TRACKFLOW INC. AND ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, AND PARTNERS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, GOODWILL, OR BUSINESS OPPORTUNITY, ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THE PLATFORM OR SERVICES.</p>
       <p>Our total cumulative liability to you for any claims arising under or related to these Terms shall not exceed the greater of (a) the total fees paid by you to TrackFlow in the 12 months preceding the claim, or (b) USD $100.</p>
       <p>Some jurisdictions do not allow the exclusion or limitation of certain types of damages; in such jurisdictions, our liability is limited to the greatest extent permitted by law.</p>
     </div>
-
     <div class="legalSection">
       <h2>10. Indemnification</h2>
       <p>You agree to indemnify, defend, and hold harmless TrackFlow Inc. and its affiliates, officers, directors, employees, agents, and licensors from and against any claims, liabilities, damages, losses, costs, and expenses (including reasonable attorneys' fees) arising out of or in connection with: (a) your use of or access to the Platform; (b) your violation of these Terms; (c) your violation of any applicable law or regulation; or (d) any content or information you submit through the Platform.</p>
     </div>
-
     <div class="legalSection">
       <h2>11. Governing Law &amp; Disputes</h2>
       <p>These Terms shall be governed by and construed in accordance with the laws of the State of New York, United States, without regard to its conflict of law provisions.</p>
@@ -1159,13 +1171,10 @@ const MSGS_KEY = "trackflow_msgs_v2";
       <p>Notwithstanding the foregoing, either party may seek injunctive or other equitable relief in any court of competent jurisdiction to prevent irreparable harm. You also retain the right to bring individual claims in small claims court.</p>
       <p>By using our services, you waive any right to participate in a class action lawsuit or class-wide arbitration against TrackFlow.</p>
     </div>
-
     <div class="legalSection">
       <h2>12. Changes to Terms</h2>
       <p>We may revise these Terms from time to time. When we make material changes, we will update the "Last Updated" date at the top of this page and, where required by applicable law, provide additional notice (such as an email notification or in-platform alert). Your continued use of the Platform after any changes become effective constitutes your agreement to the revised Terms. If you do not agree to the updated Terms, you must stop using our services.</p>
     </div>
-
-   
     <div class="legalContact">
       <div><div class="secT" style="margin-bottom:5px">Legal questions?</div><p>Our team is happy to clarify any aspect of these terms.</p></div>
       <button class="btnP" onclick="go('support')">Contact Us <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
@@ -1232,54 +1241,35 @@ function toggleMobileNav() {
   const nav = document.getElementById('mobileNav');
   const btn = document.getElementById('hamburger');
   const isOpen = nav.classList.contains('open');
-  if (isOpen) {
-    nav.classList.remove('open');
-    btn.classList.remove('open');
-    btn.setAttribute('aria-expanded','false');
-  } else {
-    nav.classList.add('open');
-    btn.classList.add('open');
-    btn.setAttribute('aria-expanded','true');
-  }
+  if (isOpen) { nav.classList.remove('open'); btn.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+  else        { nav.classList.add('open');    btn.classList.add('open');    btn.setAttribute('aria-expanded','true'); }
 }
-
 function closeMobileNav() {
   document.getElementById('mobileNav').classList.remove('open');
   document.getElementById('hamburger').classList.remove('open');
   document.getElementById('hamburger').setAttribute('aria-expanded','false');
 }
-
-/* close on outside click */
 document.addEventListener('click', function(e) {
   const nav = document.getElementById('mobileNav');
   const btn = document.getElementById('hamburger');
-  if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
-    closeMobileNav();
-  }
+  if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) closeMobileNav();
 });
-
-/* close on resize to desktop */
-window.addEventListener('resize', function() {
-  if (window.innerWidth > 640) closeMobileNav();
-});
+window.addEventListener('resize', function() { if (window.innerWidth > 640) closeMobileNav(); });
 
 /* ═══ ROUTING ═══ */
 const PAGES = ['home','orders','returns','faq','support','privacy','terms'];
 function go(id) {
   PAGES.forEach(p => {
     document.getElementById('page-'+p).classList.remove('active');
-    const n = document.getElementById('nl-'+p);
-    if (n) n.classList.remove('on');
-    const mn = document.getElementById('mn-'+p);
-    if (mn) mn.classList.remove('on');
+    const n = document.getElementById('nl-'+p); if (n) n.classList.remove('on');
+    const mn = document.getElementById('mn-'+p); if (mn) mn.classList.remove('on');
   });
   document.getElementById('page-'+id).classList.add('active');
-  const n = document.getElementById('nl-'+id);
-  if (n) n.classList.add('on');
-  const mn = document.getElementById('mn-'+id);
-  if (mn) mn.classList.add('on');
+  const n = document.getElementById('nl-'+id); if (n) n.classList.add('on');
+  const mn = document.getElementById('mn-'+id); if (mn) mn.classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
   if (id === 'support') renderInbox();
+  if (id === 'orders') renderOrders();
 }
 
 /* ═══ TRACKING ═══ */
@@ -1287,7 +1277,7 @@ function nodeIcon(state) {
   if (state === 'done')
     return `<svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.8"><polyline points="20 6 9 17 4 12"/></svg>`;
   if (state === 'active')
-    return ``;
+    return `<svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>`;
   if (state === 'cust')
     return `<svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>`;
   return '';
@@ -1297,7 +1287,7 @@ function buildTimeline(steps) {
   const tl = document.getElementById('tl');
   tl.querySelectorAll('.tlRow').forEach(n => n.remove());
   const activeIdx = steps.findIndex(s => s.state === 'active' || s.state === 'cust');
-  steps.forEach((s) => {
+  steps.forEach(s => {
     const row = document.createElement('div');
     row.className = 'tlRow';
     row.innerHTML = `
@@ -1336,36 +1326,46 @@ function runLoader(cb) {
   }, 3000);
 }
 
+function renderShipment(S) {
+  document.getElementById('resId').textContent      = S.trackingNumber;
+  document.getElementById('uTxt').textContent       = 'Last update: ' + S.lastUpdate + ' · ' + S.lastLocation;
+  document.getElementById('iEta').textContent       = S.eta;
+  document.getElementById('iCarrier').textContent   = S.carrier;
+  document.getElementById('iSvc').textContent       = S.service;
+  document.getElementById('iWt').textContent        = S.weight + ' · ' + S.dimensions;
+  document.getElementById('iShip').textContent      = S.orderDate;
+  document.getElementById('iLoc').textContent       = S.lastLocation;
+  document.getElementById('rDestFlag').textContent  = S.destFlag;
+  document.getElementById('rDestName').textContent  = S.destLabel;
+  document.getElementById('rDist').textContent      = S.routeDist;
+  buildTimeline(S.steps);
+  setTimeout(() => { document.getElementById('rFill').style.width = S.routeProgressPct + '%'; }, 300);
+  document.getElementById('resPanel').style.display = 'block';
+}
+
 function doTrack() {
   const inp = document.getElementById('tIn');
-  const raw = inp.value.trim();
+  const raw = inp.value.trim().toUpperCase();
   if (!raw) { inp.classList.add('shake'); setTimeout(() => inp.classList.remove('shake'), 500); return; }
-  if (raw.toUpperCase() !== SHIPMENT.trackingNumber) {
-  runLoader(() => {
-    inp.classList.add('shake');
-    setTimeout(() => inp.classList.remove('shake'), 500);
-    showToast('Tracking number not found.', true);
-  });
-  return;
-}
+  const S = SHIPMENTS[raw];
   document.getElementById('resPanel').style.display = 'none';
   runLoader(() => {
-    const S = SHIPMENT;
-    document.getElementById('resId').textContent = S.trackingNumber;
-    document.getElementById('uTxt').textContent = 'Last update: ' + S.lastUpdate + ' · ' + S.lastLocation;
-    document.getElementById('iEta').textContent = S.eta;
-    document.getElementById('iCarrier').textContent = S.carrier;
-    document.getElementById('iSvc').textContent = S.service;
-    document.getElementById('iWt').textContent = S.weight + ' · ' + S.dimensions;
-    document.getElementById('iShip').textContent = S.orderDate;
-    document.getElementById('iLoc').textContent = S.lastLocation;
-    buildTimeline(S.steps);
-    setTimeout(() => {
-      const fill = document.getElementById('rFill');
-      fill.style.width = S.routeProgressPct + '%';
-    }, 300);
-    document.getElementById('resPanel').style.display = 'block';
+    if (!S) {
+      inp.classList.add('shake');
+      setTimeout(() => inp.classList.remove('shake'), 500);
+      showToast('Tracking number not found.', true);
+      return;
+    }
+    renderShipment(S);
+    sessionStorage.setItem('tf_active', S.trackingNumber);
   });
+}
+
+/* Called from My Orders "Track ↗" buttons */
+function trackFromOrders(trackingNum) {
+  document.getElementById('tIn').value = trackingNum;
+  go('home');
+  setTimeout(() => doTrack(), 80);
 }
 
 document.getElementById('tIn').addEventListener('keydown', e => { if (e.key === 'Enter') doTrack(); });
@@ -1379,9 +1379,9 @@ function ordTab(btn, id) {
 
 /* ═══ RETURNS ═══ */
 function submitReturn() {
-  const ord = document.getElementById('retOrd').value.trim();
-  const email = document.getElementById('retEmail').value.trim();
-  const item = document.getElementById('retItem').value.trim();
+  const ord    = document.getElementById('retOrd').value.trim();
+  const email  = document.getElementById('retEmail').value.trim();
+  const item   = document.getElementById('retItem').value.trim();
   const reason = document.getElementById('retReason').value;
   if (!ord || !email || !item || !reason) { showToast('Please fill in all required fields.', true); return; }
   saveMsgLS({ id: Date.now(), name: 'Return Request', email, subject: 'Return — ' + ord,
@@ -1394,10 +1394,10 @@ function submitReturn() {
 
 /* ═══ SUPPORT ═══ */
 function submitMsg() {
-  const name = document.getElementById('sName').value.trim();
+  const name  = document.getElementById('sName').value.trim();
   const email = document.getElementById('sEmail').value.trim();
-  const subj = document.getElementById('sSubj').value;
-  const msg = document.getElementById('sMsg').value.trim();
+  const subj  = document.getElementById('sSubj').value;
+  const msg   = document.getElementById('sMsg').value.trim();
   if (!name || !email || !subj || !msg) { showToast('Please fill in all required fields.', true); return; }
   saveMsgLS({ id: Date.now(), name, email,
     order: document.getElementById('sOrder').value.trim() || '—',
@@ -1437,7 +1437,59 @@ function showToast(msg, isErr) {
   void t.offsetWidth; t.classList.add('show');
   clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 3800);
 }
+/* ═══ RENDER MY ORDERS ═══ */
+function renderOrders() {
+  const active = sessionStorage.getItem('tf_active');
+  const container = document.getElementById('oAct');
 
+  const ORDERS = {
+    "TF-INT-2026-77231": {
+      emoji: "🎨",
+      name: "Sealed Parcel — \"Private Cargo\"",
+      meta: "Order #ORD-2026-NAM-0047 · Placed Mar 18, 2026 · DHL Express International",
+      price: "$150.00",
+      statusLine: "Currently at Frankfurt International Cargo Hub — Awaiting flight to London Heathrow",
+      statusMeta: "Last update: Mar 20, 2026 · 05:30 AM UTC · Est. delivery: Mar 21–23 · Dest: Leigh, Greater Manchester, UK 🇬🇧"
+    },
+    "TF-INT-2026-44819": {
+      emoji: "🎨",
+      name: "Sealed Parcel — \"Private Cargo\"",
+      meta: "Order #ORD-2026-NAM-0031 · Placed Mar 9, 2026 · DHL Express International",
+      price: "$218.00",
+      statusLine: "Currently at Cincinnati International Cargo Hub — Pending US Customs processing",
+      statusMeta: "Last update: Mar 11, 2026 · 03:00 AM UTC · Est. delivery: Mar 12–14 · Dest: Aventura, FL, USA 🇺🇸"
+    }
+  };
+
+  if (!active || !ORDERS[active]) {
+    container.innerHTML = `<div class="emSt"><div class="emIco">📦</div><div class="emTtl">No orders found</div><div class="emDesc">Track a shipment first to see your order here.</div></div>`;
+    document.querySelector('.ordTab.on').textContent = 'Active (0)';
+    return;
+  }
+
+  const o = ORDERS[active];
+  document.querySelectorAll('.ordTab')[0].textContent = 'Active (1)';
+  container.innerHTML = `
+    <div class="ordCard" onclick="trackFromOrders('${active}')">
+      <div class="ordImg">${o.emoji}</div>
+      <div class="ordInfo">
+        <div class="ordName">${o.name}</div>
+        <div class="ordMeta">${o.meta}</div>
+      </div>
+      <div class="ordR">
+        <div class="ordPrice">${o.price}</div>
+        <span class="tag amb"><span class="tagDot"></span>In Transit</span>
+      </div>
+    </div>
+    <div style="background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+      <div style="font-size:1.3rem">📍</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.83rem;font-weight:600;color:var(--t1);margin-bottom:2px">${o.statusLine}</div>
+        <div style="font-size:.75rem;color:var(--t3);font-weight:300">${o.statusMeta}</div>
+      </div>
+      <button class="btnS" onclick="trackFromOrders('${active}')">Track ↗</button>
+    </div>`;
+}
 /* ═══ INIT ═══ */
 buildFAQ('all');
 go('home');
