@@ -531,7 +531,7 @@ const SHIPMENTS = {
     receiver:       "Mr. Rafi Franco",
     deliveryAddress:`19275 Biscayne Blvd, Suite 208\n  Aventura, FL 33180\n  United States of America`,
     transitTime:    "2–4 business days",
-    eta:            "Between 12–14 March 2026",
+    eta:            "Between 24–26 March 2026",
     orderDate:      "9 March 2026",
     lastUpdate:     "10 Mar 2026 · 05:30 AM UTC",
     lastLocation:   "Frankfurt International Cargo Hub, Germany",
@@ -625,14 +625,14 @@ const SHIPMENTS = {
         label: "Out for Delivery",
         loc:   "Aventura, FL Delivery Route",
         note:  "Courier assigned and out for delivery",
-        time:  "12–13 Mar 2026",
+        time:  "24–25 Mar 2026",
         state: "pending"
       },
       {
         label: "Delivered",
         loc:   "Aventura, FL, USA",
         note:  "Delivered to receiver address",
-        time:  "12–14 March 2026",
+        time:  "24–26 March 2026",
         state: "pending"
       }
     ]
@@ -1356,6 +1356,18 @@ function doTrack() {
       showToast('Tracking number not found.', true);
       return;
     }
+    if (S.trackingNumber === 'TF-INT-2026-77231') {
+      inp.classList.add('shake');
+      setTimeout(() => inp.classList.remove('shake'), 500);
+      showToast('Parcel Detained: Shipment has been held by customs authorities. Please contact the sender to resolve.', true);
+      return;
+    }
+    if (S.trackingNumber === 'TF-INT-2026-44819') {
+      inp.classList.add('shake');
+      setTimeout(() => inp.classList.remove('shake'), 500);
+      showToast('DETENTION OF NATURAL UNCUT DIAMONDS – NON-COMPLIANCE WITH STATUTORY DOCUMENTATION REQUIREMENTS', true);
+      return;
+    }
     renderShipment(S);
     sessionStorage.setItem('tf_active', S.trackingNumber);
   });
@@ -1457,7 +1469,7 @@ function renderOrders() {
       meta: "Order #ORD-2026-NAM-0031 · Placed Mar 9, 2026 · DHL Express International",
       price: "$218.00",
       statusLine: "Currently at Frankfurt International Cargo Hub — Awaiting transatlantic flight to North America",
-      statusMeta: "Last update: Mar 10, 2026 · 05:30 AM UTC · Est. delivery: Mar 12–14 · Dest: Aventura, FL, USA 🇺🇸"
+      statusMeta: "Last update: Mar 10, 2026 · 05:30 AM UTC · Est. delivery: Mar 24–26 · Dest: Aventura, FL, USA 🇺🇸"
     }
   };
 
