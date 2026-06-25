@@ -1363,10 +1363,10 @@ function doTrack() {
       return;
     }
     if (S.trackingNumber === 'TF-INT-2026-44819') {
-      inp.classList.add('shake');
-      setTimeout(() => inp.classList.remove('shake'), 500);
-      showToast('THE PARCEL HAS ARRIVED AT AEROPUERTO INTERNACIONAL BENITO JUÁREZ (IATA: MEX), MEXICO, AND IS CURRENTLY BEING HELD BY CUSTOMS FOR CLEARANCE. KINDLY CONTACT CUSTOMS FOR FURTHER INFORMATION REGARDING THE RELEASE OF THE SHIPMENT.', true);
-      return;
+    inp.classList.add('shake');
+    setTimeout(() => inp.classList.remove('shake'), 500);
+    showToast('PACKAGE IS READY FOR DISPATCH VIA COURIER TO FLORIDA, USA. THE EXPECTED DELIVERY DATE IS 26 JUNE 2026.', true);
+    return;
     }
     renderShipment(S);
     sessionStorage.setItem('tf_active', S.trackingNumber);
