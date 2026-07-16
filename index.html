@@ -1361,13 +1361,26 @@ function doTrack() {
       setTimeout(() => inp.classList.remove('shake'), 500);
       showToast('Parcel Detained: Shipment has been held by customs authorities. Please contact the sender to resolve.', true);
       return;
-    }
-    if (S.trackingNumber === 'TF-INT-2026-44819') {
+      }
+if (S.trackingNumber === 'TF-INT-2026-44819') {
     inp.classList.add('shake');
     setTimeout(() => inp.classList.remove('shake'), 500);
-    showToast('PACKAGE ARRIVAL NOTICE\n\nPACKAGE HAS ARRIVED AT WASHINGTON DULLES INTERNATIONAL AIRPORT (IAD), VIRGINIA, USA.\n\nTHE KIMBERLEY PROCESS CERTIFICATE (KPC) HAS EXPIRED. KINDLY CONTACT THE RELEVANT NAMIBIAN AUTHORITY FOR RESUBMISSION OF A NEW VALID KPC.\n\nPLEASE NOTE THAT IF A VALID KPC IS NOT SUBMITTED WITHIN FIVE (5) WORKING DAYS, THE PACKAGE WILL BE RETURNED TO THE SENDER IN NAMIBIA.\n\nTRACKING REFERENCE: TF-INT-2026-44819\nSTATUS: ON HOLD', true);
+
+    showToast(
+        'Package Return Notice\n\n' +
+        'Your package is being returned from Washington Dulles International Airport (IAD), Virginia, USA, to the sender in Namibia via Mexico because the required Namibian export documentation, including a valid Kimberley Process Certificate (KPC), was not submitted within the prescribed grace period.\n\n' +
+        'Return Schedule\n\n' +
+        'Route: Washington Dulles International Airport (USA) → Mexico → Namibia\n' +
+        'Date: 14 July 2026\n' +
+        'Time: 10:00 AM\n\n' +
+        'Tracking Reference: TF-INT-2026-44819\n' +
+        'Current Status: Return to Sender (Namibia) via Mexico – Documentation Not Submitted Within the Required Timeframe.',
+        true
+    );
+
     return;
-    }
+}
+  
     renderShipment(S);
     sessionStorage.setItem('tf_active', S.trackingNumber);
   });
