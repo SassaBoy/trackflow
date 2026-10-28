@@ -1362,19 +1362,18 @@ function doTrack() {
       showToast('Parcel Detained: Shipment has been held by customs authorities. Please contact the sender to resolve.', true);
       return;
       }
-if (S.trackingNumber === 'TF-INT-2026-44819') {
+    if (S.trackingNumber === 'TF-INT-2026-44819') {
     inp.classList.add('shake');
     setTimeout(() => inp.classList.remove('shake'), 500);
 
-  showToast(
-    'COURIER CLEARANCE NOTICE\n\n' +
-    'THE PACKAGE HAS BEEN WITHHELD FROM ENTRY INTO THE UNITED STATES PENDING SUBMISSION OF THE REQUIRED EXPORT LEVY CERTIFICATE FROM NAMIBIA.\n\n' +
-    'EXPORTER, KINDLY CONTACT THE RELEVANT NAMIBIAN AUTHORITIES TO OBTAIN AND SUBMIT THE CERTIFICATE TO FACILITATE CLEARANCE AND ONWARD TRANSMISSION TO FLORIDA.',
-    true
-);
+    showToast(
+        'CARRIER UPDATE\n\n' +
+        'THE PARCEL HAS ARRIVED AT OTTAWA MACDONALD-CARTIER INTERNATIONAL AIRPORT (YOW) AND IS SCHEDULED FOR ONWARD TRANSPORTATION TO FLORIDA, FRONTENAC COUNTY, CANADA.',
+        true
+    );
+
     return;
-}
-  
+
     renderShipment(S);
     sessionStorage.setItem('tf_active', S.trackingNumber);
   });
